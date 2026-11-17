@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="es" data-mode="admin" data-api="https://marklife-ecosistema.qumx5j.easypanel.host">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Panel maestro · Marklife</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23fff'/%3E%3Cpath d='M17 46V20l15 13 15-13v26' fill='none' stroke='%23000' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Marklife: solo blanco y negro. El color vive únicamente en los gráficos (--c1..--c6). */
+:root{
+  --bg:#000; --ink2:#0E0E0E; --ink3:#1A1A1A;
+  --glass:rgba(18,18,18,.66); --glass2:rgba(255,255,255,.045); --glass3:rgba(255,255,255,.09);
+  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+  --tx:#FFFFFF; --tx2:#BDBDBD; --mute:#7A7A7A;
+  --c1:#4C7DFF; --c2:#A78BFA; --c3:#FFB547; --c4:#2FD08A; --c5:#5EE6FF; --c6:#FF6B8B;
+  --r:22px; --r2:16px;
+  --display:"Archivo","Arial Black",sans-serif; --body:"Instrument Sans","Segoe UI",Arial,sans-serif; --mono:"JetBrains Mono",Consolas,monospace;
+  --raise:0 1px 0 rgba(255,255,255,.08) inset,0 -1px 0 rgba(0,0,0,.5) inset,0 10px 24px -8px rgba(0,0,0,.8),0 2px 4px rgba(0,0,0,.4);
+  --raise-hi:0 1px 0 rgba(255,255,255,.14) inset,0 16px 32px -10px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.08);
+  --sink:inset 0 2px 6px rgba(0,0,0,.7),inset 0 -1px 0 rgba(255,255,255,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--tx);font:15px/1.45 var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:-20%;z-index:-2;background:
+  radial-gradient(38% 32% at 10% 6%,rgba(255,255,255,.13),transparent 70%),
+  radial-gradient(30% 28% at 95% 25%,rgba(255,255,255,.06),transparent 70%),
+  radial-gradient(45% 40% at 65% 105%,rgba(255,255,255,.08),transparent 70%),#000}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--tx);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.3)}
+::selection{background:#fff;color:#000}
+.mono{font-family:var(--mono);font-feature-settings:"tnum"}
+.muted{color:var(--mute)} .tx2{color:var(--tx2)}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.012) 42%),var(--glass);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(22px) saturate(1.1);-webkit-backdrop-filter:blur(22px) saturate(1.1);box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 30px 60px -30px rgba(0,0,0,.9)}
+.edge{position:relative}
+.edge::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(255,255,255,.55),transparent 32%,transparent 68%,rgba(255,255,255,.25));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--line);cursor:pointer;font-weight:600;letter-spacing:.01em;text-decoration:none;color:var(--tx);
+  background:linear-gradient(180deg,#262626,#141414);box-shadow:var(--raise);transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s,background .18s;white-space:nowrap;user-select:none}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--raise-hi)}
+.btn:active{transform:translateY(1px) scale(.98);box-shadow:var(--sink)}
+.btn.pri{background:linear-gradient(180deg,#FFFFFF,#DADADA);color:#000;border-color:#fff;box-shadow:0 1px 0 #fff inset,0 -2px 0 rgba(0,0,0,.12) inset,0 12px 28px -8px rgba(255,255,255,.35)}
+.btn.pri:hover{box-shadow:0 1px 0 #fff inset,0 18px 36px -8px rgba(255,255,255,.45),0 0 26px rgba(255,255,255,.18)}
+.btn.ghost{background:transparent;box-shadow:none}
+.btn.ghost:hover{background:var(--glass2)}
+.btn.sm{height:34px;padding:0 14px;font-size:13px}
+.btn.xs{height:28px;padding:0 10px;font-size:12px}
+.btn.icon{width:44px;padding:0} .btn.sm.icon{width:34px} .btn.xs.icon{width:28px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld>span{font-size:11.5px;color:var(--mute);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.fld>span b{color:var(--tx)}
+.in{height:46px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.5);box-shadow:var(--sink);outline:none;transition:border .15s,box-shadow .15s;width:100%;min-width:0}
+textarea.in{height:auto;min-height:84px;padding:12px 16px;resize:vertical}
+.in:focus{border-color:rgba(255,255,255,.6);box-shadow:var(--sink),0 0 0 4px rgba(255,255,255,.08)}
+.in.bad{border-color:rgba(255,255,255,.9);box-shadow:var(--sink),0 0 0 3px rgba(255,255,255,.18)}
+select.in{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23BDBDBD' stroke-width='1.8'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+select.in option{background:#111}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+
+.seg{display:flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:999px;background:rgba(0,0,0,.55);box-shadow:var(--sink);border:1px solid var(--line);width:max-content;max-width:100%}
+.seg button{height:34px;padding:0 14px;border-radius:999px;border:0;background:transparent;color:var(--tx2);cursor:pointer;font-weight:600;font-size:13px;transition:all .18s}
+.seg button:hover{color:var(--tx)}
+.seg button.on{background:linear-gradient(180deg,#fff,#D6D6D6);color:#000;box-shadow:0 6px 18px -4px rgba(255,255,255,.35),0 1px 0 #fff inset}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(180deg,#222,#141414);box-shadow:var(--raise);cursor:pointer;font-weight:600;font-size:14px;transition:all .16s;color:var(--tx);text-decoration:none}
+.chip:hover{transform:translateY(-1px)}
+.chip.on{background:linear-gradient(180deg,#fff,#D9D9D9);color:#000;border-color:#fff;box-shadow:0 10px 24px -8px rgba(255,255,255,.35),0 1px 0 #fff inset}
+.chip img,.chip .mlogo{width:24px;height:24px;border-radius:7px;object-fit:contain;background:#fff;flex:none;margin-left:-6px}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--glass3);color:var(--tx2);white-space:nowrap;text-decoration:none}
+.tag.w{background:#fff;color:#000}
+.live{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.15),0 0 10px #fff;flex:none;animation:blink 2s infinite}
+.off{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mute);flex:none}
+@keyframes blink{50%{opacity:.4}}
+
+.sw{position:relative;width:54px;height:32px;border-radius:999px;background:rgba(0,0,0,.6);box-shadow:var(--sink);border:1px solid var(--line);cursor:pointer;transition:background .2s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,#9A9A9A,#6A6A6A);box-shadow:0 4px 10px rgba(0,0,0,.6);transition:transform .25s cubic-bezier(.3,1.4,.5,1),background .2s}
+.sw.on{background:#fff;border-color:#fff}
+.sw.on::after{transform:translateX(22px);background:linear-gradient(180deg,#222,#000)}
+.perm{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;background:rgba(0,0,0,.35);border:1px solid var(--line)}
+.perm div{flex:1;min-width:0} .perm b{font-size:14px;display:block} .perm small{color:var(--mute);font-size:12.5px}
+
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;padding:18px}
+.side .panel{height:100%;display:flex;flex-direction:column;padding:18px 12px;gap:4px}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 22px}
+.brand b{font:800 17px/1 var(--display);font-stretch:112%;letter-spacing:-.01em}
+.brand small{display:block;font:600 9.5px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+.mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(180deg,#fff,#D4D4D4);box-shadow:0 10px 24px -6px rgba(255,255,255,.3),0 1px 0 #fff inset;flex:none}
+.nav{display:flex;align-items:center;gap:12px;height:46px;padding:0 14px;border-radius:14px;color:var(--tx2);cursor:pointer;font-weight:600;border:1px solid transparent;transition:all .16s;position:relative}
+.nav:hover{color:var(--tx);background:var(--glass2)}
+.nav.on{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));border-color:rgba(255,255,255,.18);box-shadow:0 1px 0 rgba(255,255,255,.1) inset}
+.nav.on::before{content:"";position:absolute;left:-12px;top:12px;bottom:12px;width:3px;border-radius:3px;background:#fff;box-shadow:0 0 12px #fff}
+.nav .cnt{margin-left:auto;font:600 11px var(--mono);background:#fff;color:#000;border-radius:99px;padding:1px 7px}
+.side .me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-radius:16px;background:var(--glass2);border:1px solid var(--line);cursor:pointer}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:700 13px var(--display);color:#000;background:linear-gradient(180deg,#fff,#CFCFCF);flex:none;box-shadow:0 6px 14px rgba(0,0,0,.5);position:relative}
+.av.s{width:26px;height:26px;font-size:10px}
+.av.dk{background:linear-gradient(180deg,#333,#1A1A1A);color:#fff;box-shadow:0 0 0 1px var(--line2)}
+.av .live,.av .off{position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border:2px solid #000}
+.main{padding:22px 28px 120px;min-width:0}
+.top{display:flex;align-items:center;gap:14px;margin-bottom:24px;flex-wrap:wrap}
+.top h1{font:800 30px/1.05 var(--display);font-stretch:118%;letter-spacing:-.02em}
+.top .sub{color:var(--mute);font-size:14px;margin-top:4px}
+.top .sp{flex:1}
+.month{display:flex;align-items:center;gap:4px;padding:5px;border-radius:999px;background:rgba(0,0,0,.55);border:1px solid var(--line);box-shadow:var(--sink)}
+.month b{min-width:150px;text-align:center;font:700 14px var(--body);text-transform:capitalize}
+.month .btn{height:34px;width:34px;padding:0}
+
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.kpi{padding:18px 18px 16px;border-radius:var(--r);position:relative;overflow:hidden;min-width:0}
+.kpi .l{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:var(--mute);letter-spacing:.05em;text-transform:uppercase}
+.kpi .v{font:800 30px/1.1 var(--display);font-stretch:110%;margin-top:10px;letter-spacing:-.02em}
+.kpi .d{font-size:12.5px;color:var(--tx2);margin-top:4px}
+.kpi .ic{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff;flex:none}
+.kpi.hero{background:linear-gradient(150deg,rgba(255,255,255,.2),rgba(255,255,255,.03) 60%),var(--glass)}
+
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+.sec{display:flex;align-items:center;gap:12px;margin:4px 2px 14px;flex-wrap:wrap}
+.sec h2{font:800 18px var(--display);font-stretch:112%;letter-spacing:-.01em}
+.sec .sp{flex:1}
+.card{padding:20px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.cc{padding:20px;cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s}
+.cc:hover{transform:translateY(-4px);box-shadow:0 1px 0 rgba(255,255,255,.1) inset,0 40px 70px -30px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.22)}
+.cc .h{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.cc .h b{font:800 17px var(--display);font-stretch:108%;display:block}
+.cc .h small{color:var(--mute);font-size:12.5px}
+.logo{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font:800 16px var(--display);color:#000;background:#fff;flex:none;overflow:hidden;box-shadow:0 1px 0 #fff inset,0 10px 20px -6px rgba(0,0,0,.7)}
+.logo img{width:100%;height:100%;object-fit:contain;padding:4px}
+.ring{margin-left:auto;position:relative;width:54px;height:54px;flex:none}
+.ring svg{width:54px;height:54px;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:700 13px var(--mono)}
+.bars{display:flex;flex-direction:column;gap:11px}
+.bar .t{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px;color:var(--tx2);font-weight:600}
+.bar .t .mono{color:var(--tx)}
+.track{height:9px;border-radius:9px;background:rgba(255,255,255,.06);box-shadow:var(--sink);overflow:hidden}
+.fill{height:100%;border-radius:9px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bar.big .track{height:12px}
+
+.feed{display:flex;flex-direction:column}
+.ev{display:flex;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.ev:last-child{border:0}
+.ev .ic{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;flex:none;background:var(--glass3)}
+.ev p{font-size:13.5px;line-height:1.4}
+.ev small{color:var(--mute);font-size:12px}
+
+.board{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:16px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory}
+.colm{padding:14px;min-height:300px;scroll-snap-align:start}
+.colm .ch{display:flex;align-items:center;gap:10px;padding:4px 6px 14px;font:800 14px var(--display);font-stretch:108%;text-transform:uppercase;letter-spacing:.04em}
+.colm .ch .n{margin-left:auto;font:600 12px var(--mono);color:var(--mute)}
+.dc{padding:14px;border-radius:var(--r2);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid var(--line);margin-bottom:10px;box-shadow:var(--raise);transition:transform .18s;cursor:pointer}
+.dc:hover{transform:translateY(-2px)}
+.dc .r1{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.dc .tt{font-weight:600;font-size:14.5px;line-height:1.3;margin-bottom:10px}
+.dc .r2{display:flex;align-items:center;gap:8px}
+.dc .r2 .sp{flex:1}
+.empty{padding:28px 16px;text-align:center;color:var(--mute);font-size:13.5px;border:1px dashed var(--line2);border-radius:var(--r2)}
+.hero-empty{padding:56px 24px;text-align:center}
+.hero-empty h2{font:800 26px var(--display);font-stretch:116%;margin:18px 0 8px}
+.hero-empty p{color:var(--mute);max-width:440px;margin:0 auto 22px}
+
+.stepper{display:flex;align-items:center;padding:4px;border-radius:999px;background:rgba(0,0,0,.55);box-shadow:var(--sink);border:1px solid var(--line)}
+.stepper button{flex:1;height:34px;border:0;border-radius:999px;background:transparent;color:var(--mute);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .18s;white-space:nowrap;padding:0 8px}
+.stepper button.done{color:var(--tx2)}
+.stepper button i{width:7px;height:7px;border-radius:50%;border:1.6px solid currentColor;display:inline-block}
+.stepper button.done i{background:currentColor}
+.stepper button.cur{color:#000;background:linear-gradient(180deg,#fff,#D6D6D6);box-shadow:0 6px 16px -4px rgba(255,255,255,.35)}
+.stepper button.cur i{background:#000;border-color:#000}
+.drow{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(320px,1fr) auto;gap:14px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
+.drow:last-child{border:0}
+.drow .tt{font-weight:600}
+.drow .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:13px 12px;border-bottom:1px solid var(--line)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.n,.tbl th.n{text-align:right;font-family:var(--mono);font-feature-settings:"tnum"}
+.tbl tfoot td{font-weight:700;border-top:1px solid var(--line2);border-bottom:0}
+.tbl tbody tr:hover{background:var(--glass2)}
+.tbl .cl{display:flex;align-items:center;gap:10px}
+.tbl .cl .logo{width:30px;height:30px;border-radius:9px;font-size:11px}
+.scroll{overflow-x:auto}
+
+.chead{display:flex;align-items:center;gap:18px;padding:22px;margin-bottom:18px;flex-wrap:wrap}
+.chead .logo{width:76px;height:76px;border-radius:22px;font-size:26px}
+.chead h1{font:800 30px/1 var(--display);font-stretch:116%;letter-spacing:-.02em}
+.tabs{margin-bottom:18px}
+.links{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.minis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.mini{padding:14px 16px;border-radius:var(--r2);background:rgba(0,0,0,.4);border:1px solid var(--line);min-width:0}
+.mini .l{font-size:11.5px;color:var(--mute);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.mini .v{font:800 22px var(--display);margin-top:6px;font-stretch:108%;overflow:hidden;text-overflow:ellipsis}
+.mini .d{font-size:12px;color:var(--tx2);margin-top:2px}
+.info{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 22px}
+.info div{padding:12px 0;border-bottom:1px solid var(--line);min-width:0}
+.info span{display:block;font-size:11px;color:var(--mute);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.info p{font-size:14.5px;white-space:pre-wrap;word-break:break-word}
+
+.file{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;transition:background .12s}
+.file:hover{background:var(--glass2)}
+.file .th{width:44px;height:44px;border-radius:10px;background:var(--ink3) center/cover;flex:none;display:grid;place-items:center;color:var(--tx2)}
+.file .nm{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file .mt{font-size:12px;color:var(--mute)}
+
+.month-hist{padding:20px;margin-bottom:14px}
+.month-hist h3{font:800 18px var(--display);font-stretch:110%;text-transform:capitalize;display:flex;align-items:center;gap:10px}
+
+/* Gráficos (único lugar con color) */
+.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.chartcard{padding:18px 20px}
+.chartcard h3{font:800 15px var(--display);font-stretch:108%;display:flex;align-items:center;gap:8px}
+.chartcard .big{font:800 26px var(--display);font-stretch:108%;margin-top:6px}
+.chart{display:flex;align-items:flex-end;gap:6px;height:170px;padding-top:24px}
+.chart .c{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;min-width:0}
+.chart .b{width:100%;max-width:36px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,color-mix(in srgb,var(--k) 70%,#fff),var(--k));box-shadow:0 0 16px -4px var(--k),0 1px 0 rgba(255,255,255,.45) inset;position:relative;transition:height .9s cubic-bezier(.2,.8,.2,1);min-height:3px}
+.chart .b.dim{background:linear-gradient(180deg,color-mix(in srgb,var(--k) 45%,#222),color-mix(in srgb,var(--k) 25%,#111));box-shadow:none}
+.chart .b span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font:600 10px var(--mono);color:var(--tx2);padding-bottom:4px;white-space:nowrap}
+.chart .x{font-size:10.5px;color:var(--mute);text-transform:capitalize}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:12.5px;color:var(--tx2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.donut{display:flex;align-items:center;gap:22px;margin-top:10px}
+.donut svg{width:150px;height:150px;flex:none;transform:rotate(-90deg)}
+.line svg{width:100%;height:170px;overflow:visible;margin-top:10px}
+
+.fab{position:fixed;right:28px;bottom:28px;z-index:40;height:60px;padding:0 26px 0 20px;font-size:15px}
+.fab .ring2{position:absolute;inset:-6px;border-radius:999px;border:2px solid rgba(255,255,255,.45);animation:pulse 2.6s infinite}
+@keyframes pulse{0%{opacity:.8;transform:scale(.96)}70%{opacity:0;transform:scale(1.12)}100%{opacity:0}}
+
+.ov{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:grid;place-items:center;padding:20px;animation:fade .2s}
+.modal{width:min(640px,100%);max-height:calc(100vh - 40px);overflow-y:auto;overflow-x:hidden;padding:26px;animation:pop .32s cubic-bezier(.2,1.2,.4,1)}
+.modal.wide{width:min(820px,100%)}
+.modal h2{font:800 22px var(--display);font-stretch:114%;letter-spacing:-.01em;margin-bottom:4px}
+.modal .sub{color:var(--mute);font-size:13.5px;margin-bottom:20px}
+.modal .body{display:flex;flex-direction:column;gap:16px}
+.modal .foot{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex-wrap:wrap}
+.modal .foot .sp{flex:1}
+.steps{display:flex;gap:8px;margin:0 0 22px}
+.steps div{flex:1;min-width:0}
+.steps i{display:block;height:4px;border-radius:4px;background:rgba(255,255,255,.12);margin-bottom:8px;transition:background .3s}
+.steps div.on i,.steps div.done i{background:#fff;box-shadow:0 0 10px rgba(255,255,255,.5)}
+.steps span{font-size:11.5px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.steps div.on span{color:#fff}
+.drop{display:flex;align-items:center;gap:18px;padding:16px;border-radius:18px;border:1.5px dashed var(--line2);background:rgba(0,0,0,.35);cursor:pointer;transition:border .15s,background .15s}
+.drop:hover,.drop.over{border-color:#fff;background:rgba(255,255,255,.04)}
+.drop .pv{width:88px;height:88px;border-radius:20px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none;color:#000}
+.drop .pv img{width:100%;height:100%;object-fit:contain;padding:6px}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}}
+
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:80;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;display:flex;gap:10px;align-items:center;animation:pop .3s;max-width:calc(100vw - 30px)}
+.toast.err{background:#fff;color:#000;border-color:#fff;backdrop-filter:none}
+.spin{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.15);border-top-color:#fff;animation:rot .8s linear infinite;flex:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+.loader{display:grid;place-items:center;min-height:100vh}
+.loader .ringl{width:72px;height:72px;border-radius:50%;border:3px solid rgba(255,255,255,.1);border-top-color:#fff;box-shadow:0 0 30px rgba(255,255,255,.15);animation:rot 1s linear infinite}
+
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login .box{width:min(420px,100%);padding:36px 30px}
+.login h1{font:900 34px/1 var(--display);font-stretch:120%;letter-spacing:-.03em;margin:22px 0 8px}
+.login h1 em{font-style:normal;color:var(--mute)}
+.login p{color:var(--mute);margin-bottom:26px}
+.rise{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+
+.tabbar{display:none}
+@media (max-width:1180px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.cols{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .main{padding:16px 14px 130px}
+  .top h1{font-size:24px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .kpi .v{font-size:24px}
+  .kpi.hero{grid-column:1/-1}
+  .grid2,.grid3,.charts{grid-template-columns:minmax(0,1fr)}
+  .drow{grid-template-columns:minmax(0,1fr)}
+  .board{grid-template-columns:repeat(4,86vw)}
+  .fab{right:16px;bottom:92px;height:56px;padding:0 20px 0 16px}
+  .tabbar{display:flex;position:fixed;left:10px;right:10px;bottom:10px;z-index:50;padding:6px;justify-content:space-around;border-radius:24px;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+  .tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;color:var(--mute);font-size:10.5px;font-weight:600;padding:8px 0;border-radius:16px;cursor:pointer}
+  .tabbar button.on{color:#000;background:#fff}
+  .month b{min-width:120px}
+  .chead h1{font-size:24px}
+  .modal{padding:22px 18px}
+  .donut{flex-direction:column}
+}
+@media print{
+  body::before,body::after,.noprint{display:none!important}
+  .glass{backdrop-filter:none}
+}
+</style>
+</head>
+<body>
+<div id="root"><div class="loader"><div class="ringl"></div></div></div>
+<script>
+'use strict';
+const MODE=document.documentElement.dataset.mode;           // equipo | admin | reporte
+const API=(document.documentElement.dataset.api||'').replace(/\/+$/,'');
+const TKEY='eml_'+MODE;
+
+// ───────────── Iconos SVG propios ─────────────
+const ICONS={
+  home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  board:'<rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18 14.8c1.9.7 3.1 2.3 3.5 5.2"/>',
+  clients:'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/>',
+  ads:'<path d="M3 11v2a1 1 0 001 1h2l5 4V6L6 10H4a1 1 0 00-1 1z"/><path d="M15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/>',
+  eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',left:'<path d="M15 18l-6-6 6-6"/>',right:'<path d="M9 18l6-6-6-6"/>',
+  up:'<path d="M7 14l5-5 5 5"/>',down:'<path d="M7 10l5 5 5-5"/>',
+  bulb:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0012 3z"/>',
+  camera:'<path d="M3 8a2 2 0 012-2h2l1.5-2h7L17 6h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><circle cx="12" cy="13" r="3.5"/>',
+  scissors:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1L20 20M8.1 15.9L20 4"/>',
+  send:'<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>',
+  chart:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/>',
+  pie:'<path d="M21 12A9 9 0 1112 3v9z"/><path d="M15 3.5A9 9 0 0120.5 9H15z"/>',
+  drive:'<path d="M8 3h8l6 10.5-4 7H6l-4-7z"/><path d="M8 3l6 10.5H2M16 3l-6 10.5 4 7"/>',
+  flux:'<path d="M4 6h16M4 12h10M4 18h6"/><circle cx="18" cy="16" r="3"/>',
+  sync:'<path d="M21 12a9 9 0 01-15.5 6.3L3 16"/><path d="M3 12A9 9 0 0118.5 5.7L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/>',
+  link:'<path d="M10 14a5 5 0 007.1 0l3-3a5 5 0 00-7.1-7.1l-1.7 1.7"/><path d="M14 10a5 5 0 00-7.1 0l-3 3a5 5 0 007.1 7.1l1.7-1.7"/>',
+  ext:'<path d="M14 4h6v6M20 4l-9 9"/><path d="M19 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1h5"/>',
+  edit:'<path d="M4 20h4L19 9a2.8 2.8 0 00-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+  trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',check:'<path d="M5 12.5l4.5 4.5L19 7"/>',
+  logout:'<path d="M15 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4"/><path d="M10 17l-5-5 5-5M5 12h11"/>',
+  file:'<path d="M14 3H6a1 1 0 00-1 1v16a1 1 0 001 1h12a1 1 0 001-1V8z"/><path d="M14 3v5h5"/>',
+  video:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/>',
+  image:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
+  upload:'<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  money:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/>',
+  chat:'<path d="M21 12a8 8 0 01-11.6 7.1L4 21l1.9-5.4A8 8 0 1121 12z"/>',
+  trophy:'<path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0z"/><path d="M17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"/>',
+  key:'<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L20 3M17 6l3 3M15 8l2 2"/>',
+  shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  print:'<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/>',
+  ig:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>',
+  pin:'<path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+  spark:'<path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+};
+const ico=(n,s)=>`<svg class="i" viewBox="0 0 24 24"${s?` style="width:${s}px;height:${s}px"`:''}>${ICONS[n]||''}</svg>`;
+const MARK='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V7l8 7 8-7v11"/></svg>';
+
+// ───────────── Utilidades ─────────────
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=s=>document.querySelector(s);
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const thisMonth=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')};
+const mLabel=m=>{const [y,mm]=m.split('-');return MESES[+mm-1]+' '+y};
+const mShort=m=>MESES[+m.split('-')[1]-1].slice(0,3);
+const addM=(m,n)=>{let [y,mm]=m.split('-').map(Number);mm+=n;while(mm>12){mm-=12;y++}while(mm<1){mm+=12;y--}return y+'-'+String(mm).padStart(2,'0')};
+const lastN=(m,n)=>Array.from({length:n},(_,i)=>addM(m,i-n+1));
+const money=n=>'$'+(Math.round((n||0)*100)/100).toLocaleString('es-VE',{maximumFractionDigits:2});
+const fmt=n=>(Math.round(n||0)).toLocaleString('es-VE');
+const pct=(a,b)=>b?Math.min(100,Math.round(a/b*100)):0;
+const fdate=d=>d?new Date(d+(d.length===10?'T12:00:00':'')).toLocaleDateString('es-VE',{day:'numeric',month:'long',year:'numeric'}):'';
+const ago=iso=>{if(!iso)return'nunca';const s=(Date.now()-new Date(iso))/1000;if(s<60)return'hace un momento';if(s<3600)return'hace '+Math.floor(s/60)+' min';if(s<86400)return'hace '+Math.floor(s/3600)+' h';if(s<172800)return'ayer';return new Date(iso).toLocaleDateString('es-VE',{day:'numeric',month:'short'})};
+const initials=n=>String(n||'?').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const delta=(a,b)=>b?`<span style="display:inline-flex;align-items:center;gap:2px;color:#fff">${ico(a>=b?'up':'down',14)}${Math.abs(Math.round((a-b)/b*100))}%</span> vs mes anterior`:'sin mes anterior';
+const logoUrl=f=>f?API+'/api/logos/'+encodeURIComponent(f):'';
+
+const STAGE={idea:{n:'Idea',c:'var(--c1)',i:'bulb'},produccion:{n:'Producción',c:'var(--c2)',i:'camera'},edicion:{n:'Edición',c:'var(--c3)',i:'scissors'},publicado:{n:'Publicado',c:'var(--c4)',i:'send'}};
+const STAGES=['idea','produccion','edicion','publicado'];
+const TYPES=['Reel','Post','Carrusel','Historia','Video','Fotos','Diseño','Landing','Anuncio','Otro'];
+const PLATFORMS=['Meta Ads','Google Ads','TikTok Ads','Otro'];
+const SOURCES=['Instagram','Facebook','TikTok','Landing','Google','YouTube'];
+const SRC_C={Instagram:'var(--c2)',Facebook:'var(--c1)',TikTok:'var(--c6)',Landing:'var(--c4)',Google:'var(--c3)',YouTube:'var(--c5)'};
+const RESULT_KINDS=['Ventas','Citas','Clientes nuevos','Seguidores ganados','Otro'];
+const PERIODS={mes:'Mensual',trimestre:'Trimestral',semestre:'Semestral',anio:'Anual'};
+const AREAS=['Ideas y guiones','Producción','Edición','Publicación y comunidad','Anuncios','Diseño','Estrategia','Dirección'];
+const PERMS={anuncios:['Anuncios','Registrar y editar la inversión en anuncios'],visitas:['Visitas y resultados','Registrar visitas, seguidores y resultados del cliente'],borrar:['Eliminar piezas','Borrar piezas creadas por otros'],finanzas:['Ver finanzas','Ver el fee mensual de cada cliente']};
+
+let S={token:localStorage.getItem(TKEY)||'',data:null,view:'inicio',month:thisMonth(),client:null,ctab:'resumen',boardFilter:'todos',period:'mes'};
+
+async function api(method,url,body){
+  const r=await fetch(API+url,{method,headers:Object.assign({'Content-Type':'application/json'},S.token?{Authorization:'Bearer '+S.token}:{}),body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>({}));
+  if(r.status===401&&!url.startsWith('/api/login')&&!url.startsWith('/api/report')){logout();throw new Error(j.error||'Sesión vencida')}
+  if(!r.ok)throw new Error(j.error||'Error '+r.status);
+  return j;
+}
+function toast(msg,err){document.querySelectorAll('.toast').forEach(t=>t.remove());const t=document.createElement('div');t.className='toast glass'+(err?' err':'');t.innerHTML=ico(err?'info':'check')+esc(msg);document.body.appendChild(t);setTimeout(()=>t.remove(),err?5000:3000)}
+async function act(fn,okMsg){try{const r=await fn();if(okMsg)toast(okMsg);return r}catch(e){toast(e.message,true)}}
+async function reload(){S.data=await api('GET','/api/state');render()}
+function logout(){S.token='';localStorage.removeItem(TKEY);S.data=null;closeModal();renderLogin()}
+const ADMIN=()=>S.data&&S.data.scope==='admin';
+const D=()=>S.data;
+const P=k=>D().me.perms[k];
+const userById=id=>D().users.find(u=>u.id===id);
+const clientById=id=>D().clients.find(c=>c.id===id);
+const activeClients=()=>D().clients.filter(c=>c.active!==false);
+
+// ───────────── Cálculos ─────────────
+const monthsOfPeriod=(m,p)=>{const [y,mm]=m.split('-').map(Number);let s,n;
+  if(p==='mes'){s=mm;n=1}else if(p==='trimestre'){s=Math.floor((mm-1)/3)*3+1;n=3}else if(p==='semestre'){s=mm<=6?1:7;n=6}else{s=1;n=12}
+  return Array.from({length:n},(_,i)=>y+'-'+String(s+i).padStart(2,'0'))};
+const periodLabel=(m,p)=>{const [y,mm]=m.split('-').map(Number);if(p==='mes')return mLabel(m);if(p==='trimestre')return'T'+(Math.floor((mm-1)/3)+1)+' '+y;if(p==='semestre')return(mm<=6?'1er':'2do')+' semestre '+y;return'Año '+y};
+const delivs=(cid,m)=>D().deliverables.filter(d=>(!cid||d.clientId===cid)&&(!m||d.month===m));
+function sumAds(cid,months){const r={spend:0,leads:0,reach:0,clicks:0,impressions:0};D().ads.filter(a=>(!cid||a.clientId===cid)&&months.includes(a.month)).forEach(a=>{for(const k in r)r[k]+=a[k]||0});return r}
+function sumVisits(cid,months,src){const r={visits:0,followers:0,interactions:0};D().visits.filter(a=>(!cid||a.clientId===cid)&&months.includes(a.month)&&(!src||a.source===src)).forEach(a=>{r.visits+=a.visits||0;r.interactions+=a.interactions||0;r.followers=Math.max(r.followers,a.followers||0)});return r}
+const fluxOf=(cid,m)=>(D().flux[cid]||{})[m]||null;
+function fluxLeads(cid,months){let n=0,has=false;(cid?[cid]:activeClients().map(c=>c.id)).forEach(id=>months.forEach(m=>{const f=fluxOf(id,m);if(f){has=true;n+=f.newLeads||0}}));return has?n:null}
+function progress(c,m){
+  const ds=delivs(c.id,m),goal=Math.max(1,c.goal||D().settings.defaultGoal);
+  const at=i=>ds.filter(d=>STAGES.indexOf(d.stage)>=i).length;
+  const resParts=[D().ads.some(a=>a.clientId===c.id&&a.month===m),D().visits.some(a=>a.clientId===c.id&&a.month===m),D().results.some(a=>a.clientId===c.id&&a.month===m)||!!fluxOf(c.id,m)];
+  const rows=[{n:'Ideas',v:at(0),g:goal,c:STAGE.idea.c},{n:'Producción',v:at(1),g:goal,c:STAGE.produccion.c},{n:'Edición',v:at(2),g:goal,c:STAGE.edicion.c},{n:'Publicación',v:at(3),g:goal,c:STAGE.publicado.c},{n:'Resultados',v:resParts.filter(Boolean).length,g:3,c:'var(--c5)'}];
+  rows.forEach(r=>r.p=pct(r.v,r.g));
+  return{rows,total:Math.round(rows.reduce((a,r)=>a+r.p,0)/rows.length)};
+}
+
+// ───────────── Componentes ─────────────
+const barsHTML=rows=>`<div class="bars">${rows.map(r=>`<div class="bar"><div class="t"><span>${r.n}</span><span class="mono">${r.v}<span class="muted">/${r.g}</span></span></div><div class="track"><div class="fill" style="width:${r.p}%;background:linear-gradient(90deg,color-mix(in srgb,${r.c} 50%,transparent),${r.c});box-shadow:0 0 12px -2px ${r.c}"></div></div></div>`).join('')}</div>`;
+const ringHTML=p=>{const R=23,L=2*Math.PI*R;return`<div class="ring"><svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="${R}" stroke="rgba(255,255,255,.1)" stroke-width="5" fill="none"/><circle cx="27" cy="27" r="${R}" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L*(1-p/100)}" style="filter:drop-shadow(0 0 5px rgba(255,255,255,.6));transition:stroke-dashoffset 1s"/></svg><b>${p}%</b></div>`};
+const logoHTML=(c,cls='logo')=>`<div class="${cls}">${c.logo?`<img src="${esc(logoUrl(c.logo))}" alt="" loading="lazy">`:esc(initials(c.name))}</div>`;
+const miniLogo=c=>c.logo?`<img src="${esc(logoUrl(c.logo))}" alt="">`:`<span class="mlogo" style="display:grid;place-items:center;font:800 10px var(--display);color:#000">${esc(initials(c.name))}</span>`;
+const avHTML=(u,cls='av s',dot)=>u?`<div class="${cls}" title="${esc(u.name)}">${esc(initials(u.name))}${dot?(u.online?'<span class="live"></span>':'<span class="off" style="background:#000"></span>'):''}</div>`:'';
+function chartHTML(items,fmtv=fmt,color='var(--c1)',hiIdx){const max=Math.max(1,...items.map(i=>i.v));return`<div class="chart">${items.map((it,i)=>`<div class="c"><div class="b${hiIdx!=null&&i!==hiIdx?' dim':''}" style="--k:${it.c||color};height:${Math.max(2,it.v/max*100)}%"><span>${it.v?fmtv(it.v):''}</span></div><div class="x">${esc(it.l)}</div></div>`).join('')}</div>`}
+function stackHTML(months,series){const tot=months.map((m,i)=>series.reduce((a,s)=>a+s.vals[i],0)),max=Math.max(1,...tot);
+  return`<div class="chart">${months.map((m,i)=>`<div class="c"><div style="width:100%;max-width:36px;height:${Math.max(2,tot[i]/max*100)}%;display:flex;flex-direction:column-reverse;border-radius:8px 8px 3px 3px;overflow:hidden;position:relative">${series.map(s=>s.vals[i]?`<div style="flex:${s.vals[i]};background:${s.c}"></div>`:'').join('')}<span style="position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font:600 10px var(--mono);color:var(--tx2);padding-bottom:4px">${tot[i]?fmt(tot[i]):''}</span></div><div class="x">${mShort(m)}</div></div>`).join('')}</div><div class="legend">${series.filter(s=>s.vals.some(Boolean)).map(s=>`<span><i style="background:${s.c}"></i>${esc(s.n)}</span>`).join('')}</div>`}
+function lineHTML(items,fmtv,color){const W=600,H=150,max=Math.max(1,...items.map(i=>i.v)),n=items.length,x=i=>n<2?W/2:i*(W/(n-1)),y=v=>H-(v/max)*(H-20);
+  const pts=items.map((it,i)=>[x(i),y(it.v)]),d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  return`<div class="line"><svg viewBox="0 0 ${W} ${H+22}" preserveAspectRatio="none"><defs><linearGradient id="lg${n}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".35"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><path d="${d} L${x(n-1)} ${H} L0 ${H}Z" fill="url(#lg${n})"/><path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 6px ${color})"/>${pts.map((p,i)=>items[i].v?`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${color}" vector-effect="non-scaling-stroke"/>`:'').join('')}${items.map((it,i)=>`<text x="${x(i)}" y="${H+18}" fill="#7A7A7A" font-size="11" text-anchor="${i===0?'start':i===n-1?'end':'middle'}" font-family="Instrument Sans">${esc(it.l)}</text>`).join('')}</svg></div>`}
+function donutHTML(parts){const tot=parts.reduce((a,p)=>a+p.v,0),R=60,L=2*Math.PI*R;let off=0;
+  return`<div class="donut"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="${R}" stroke="rgba(255,255,255,.07)" stroke-width="18" fill="none"/>${tot?parts.map(p=>{const len=p.v/tot*L,s=`<circle cx="75" cy="75" r="${R}" stroke="${p.c}" stroke-width="18" fill="none" stroke-dasharray="${len} ${L-len}" stroke-dashoffset="${-off}"/>`;off+=len;return s}).join(''):''}</svg><div class="legend" style="flex-direction:column;gap:8px;margin:0">${parts.map(p=>`<span><i style="background:${p.c}"></i>${esc(p.n)} <b class="mono" style="color:#fff">${p.v}</b></span>`).join('')}</div></div>`}
+const stepperHTML=d=>{const ci=STAGES.indexOf(d.stage);return`<div class="stepper">${STAGES.map((s,i)=>`<button class="${i<ci?'done':''}${i===ci?' cur':''}" onclick="event.stopPropagation();setStage('${d.id}','${s}')"><i></i>${STAGE[s].n}</button>`).join('')}</div>`};
+const typeIcon=t=>({Reel:'video',Video:'video',Historia:'video',Post:'image',Carrusel:'image',Fotos:'camera',Diseño:'image',Landing:'globe',Anuncio:'ads'}[t]||'file');
+
+// ───────────── Login ─────────────
+function renderLogin(){
+  const adm=MODE==='admin';
+  $('#root').innerHTML=`<div class="login"><div class="box glass edge rise">
+    <div class="mark" style="width:54px;height:54px;border-radius:17px">${MARK}</div>
+    <h1>${adm?'Panel<br><em>maestro</em>':'Ecosistema<br><em>Marklife</em>'}</h1>
+    <p>${adm?'Acceso exclusivo del fundador.':'Equipo Marklife. Entra con tu usuario.'}</p>
+    <form id="lf" style="display:flex;flex-direction:column;gap:14px">
+      <label class="fld"><span>Usuario</span><input class="in" name="user" autocomplete="username" autocapitalize="none" required></label>
+      <label class="fld"><span>Clave</span><input class="in" name="pass" type="password" autocomplete="current-password" required></label>
+      <button class="btn pri" style="height:52px;margin-top:8px">Entrar ${ico('right')}</button>
+    </form></div></div>`;
+  $('#lf').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);
+    await act(async()=>{const r=await api('POST','/api/login',{user:f.get('user'),pass:f.get('pass'),panel:MODE});S.token=r.token;localStorage.setItem(TKEY,r.token);await reload()})};
+}
+
+// ───────────── Estructura ─────────────
+function navItems(){
+  const n=[{k:'inicio',n:ADMIN()?'Panel maestro':'Inicio',i:'home'},{k:'tablero',n:'Tablero',i:'board'},{k:'clientes',n:'Clientes',i:'clients'},{k:'anuncios',n:'Anuncios',i:'ads'},{k:'visitas',n:'Visitas',i:'eye'},{k:'historial',n:'Historial',i:'clock'}];
+  if(ADMIN())n.push({k:'equipo',n:'Equipo',i:'users'});
+  n.push({k:'ajustes',n:'Ajustes',i:'gear'});return n;
+}
+function go(v,extra){Object.assign(S,{view:v},extra||{});if(v!=='cliente')S.client=null;render();window.scrollTo({top:0,behavior:'smooth'})}
+function shiftMonth(n){S.month=addM(S.month,n);render()}
+function render(){
+  if(!S.data)return;
+  const me=D().me,myOpen=delivs(null,S.month).filter(d=>d.assignee===me.id&&d.stage!=='publicado').length,nav=navItems(),cur=S.view==='cliente'?'clientes':S.view;
+  const online=D().users.filter(u=>u.online&&u.active).length;
+  $('#root').innerHTML=`<div class="app">
+   <aside class="side"><div class="panel glass">
+     <div class="brand"><div class="mark">${MARK}</div><div><b>${ADMIN()?'Panel maestro':'Ecosistema'}</b><small>Marklife Agency</small></div></div>
+     ${nav.map(n=>`<div class="nav${cur===n.k?' on':''}" onclick="go('${n.k}')">${ico(n.i)}${n.n}${n.k==='tablero'&&myOpen?`<span class="cnt">${myOpen}</span>`:''}${n.k==='equipo'&&online?`<span class="cnt">${online}</span>`:''}</div>`).join('')}
+     <div class="me" onclick="go('ajustes')">${avHTML(me,'av')}<div style="min-width:0"><div style="font-weight:700;font-size:14px">${esc(me.name)}</div><div class="muted" style="font-size:12px">${ADMIN()?'Fundador':esc(me.area||'Equipo')}</div></div></div>
+   </div></aside>
+   <main class="main" id="main"></main>
+  </div>
+  ${activeClients().length?`<button class="btn pri fab noprint" onclick="quickAdd()"><span class="ring2"></span>${ico('plus',22)}Registrar avance</button>`:''}
+  <nav class="tabbar glass noprint">${[nav[0],nav[1],nav[2],nav[3],{k:'mas',n:'Más',i:'menu'}].map(n=>`<button class="${cur===n.k||(n.k==='mas'&&['visitas','historial','equipo','ajustes'].includes(cur))?'on':''}" onclick="${n.k==='mas'?'moreMenu()':`go('${n.k}')`}">${ico(n.i,20)}${n.k==='inicio'?'Inicio':n.n}</button>`).join('')}</nav>`;
+  const V={inicio:vInicio,tablero:vTablero,clientes:vClientes,cliente:vCliente,anuncios:vAnuncios,visitas:vVisitas,historial:vHistorial,equipo:vEquipo,ajustes:vAjustes}[S.view]||vInicio;
+  $('#main').innerHTML=V();
+}
+function moreMenu(){modal(`<h2>Más</h2><div class="body" style="margin-top:14px">${navItems().slice(4).map(n=>`<button class="btn" style="justify-content:flex-start;height:54px" onclick="closeModal();go('${n.k}')">${ico(n.i)}${n.n}</button>`).join('')}<button class="btn ghost" style="height:50px" onclick="logout()">${ico('logout')}Salir</button></div>`)}
+const monthHTML=()=>`<div class="month"><button class="btn" onclick="shiftMonth(-1)" aria-label="Mes anterior">${ico('left')}</button><b>${mLabel(S.month)}</b><button class="btn" onclick="shiftMonth(1)" aria-label="Mes siguiente">${ico('right')}</button></div>`;
+const topHTML=(title,sub,right='',month=true)=>`<div class="top rise"><div><h1>${title}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div><div class="sp"></div>${right}${month?monthHTML():''}</div>`;
+function noClients(){return`<div class="glass edge hero-empty rise"><div class="mark" style="margin:0 auto;width:60px;height:60px;border-radius:19px">${MARK}</div><h2>${ADMIN()?'Agrega tu primer cliente':'Aún no hay clientes'}</h2><p>${ADMIN()?'Con su ficha completa y su logo. Desde ahí el equipo podrá registrar cada pieza y el Ecosistema generará sus gráficos.':'Cuando el fundador agregue clientes, aparecerán aquí para que registres tus avances.'}</p>${ADMIN()?`<button class="btn pri" style="height:52px" onclick="clientForm()">${ico('plus')}Agregar cliente</button>`:''}</div>`}
+
+// ───────────── Inicio ─────────────
+function vInicio(){
+  const me=D().me,m=S.month,cl=activeClients(),ds=delivs(null,m);
+  const h=new Date().getHours(),saludo=h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
+  const head=topHTML(`${saludo}, ${esc(me.name.split(' ')[0])}`,ADMIN()?'Panel maestro · así va la agencia este mes':'Esto es lo que tienes en marcha este mes');
+  if(!cl.length)return head+noClients()+(ADMIN()?`<div style="margin-top:20px">${teamPulse(m)}</div>`:'');
+  const goal=cl.reduce((a,c)=>a+(c.goal||D().settings.defaultGoal),0),pub=ds.filter(d=>d.stage==='publicado').length;
+  const avg=Math.round(cl.reduce((a,c)=>a+progress(c,m).total,0)/cl.length);
+  const ads=sumAds(null,[m]),adsPrev=sumAds(null,[addM(m,-1)]),fl=fluxLeads(null,[m]),leadsTotal=fl!=null?fl:ads.leads;
+  const evs=D().events.slice().reverse().slice(0,14),mine=ds.filter(d=>d.assignee===me.id&&d.stage!=='publicado');
+  return head+`<div class="kpis">
+    <div class="kpi glass edge hero rise"><div class="l"><span class="ic">${ico('target',16)}</span>Avance ${ADMIN()?'de la agencia':'general'}</div><div class="v">${avg}%</div><div class="track" style="margin-top:12px"><div class="fill" style="width:${avg}%;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.6)"></div></div><div class="d" style="margin-top:8px">${cl.length} cliente(s) activos</div></div>
+    <div class="kpi glass rise"><div class="l"><span class="ic">${ico('send',16)}</span>Publicados</div><div class="v mono">${pub}<span class="muted" style="font-size:18px">/${goal}</span></div><div class="d">${ds.length} piezas en curso</div></div>
+    <div class="kpi glass rise"><div class="l"><span class="ic">${ico('money',16)}</span>Inversión Ads</div><div class="v mono">${money(ads.spend)}</div><div class="d">${delta(ads.spend,adsPrev.spend)}</div></div>
+    <div class="kpi glass rise"><div class="l"><span class="ic">${ico('chat',16)}</span>${fl!=null?'Leads en Flux':'Leads de anuncios'}</div><div class="v mono">${fmt(leadsTotal)}</div><div class="d">${fl!=null?fmt(ads.leads)+' reportados por anuncios':'Flux aún sin conectar'}</div></div>
+    <div class="kpi glass rise"><div class="l"><span class="ic">${ico('chart',16)}</span>Costo por lead</div><div class="v mono">${leadsTotal?money(ads.spend/leadsTotal):'—'}</div><div class="d">inversión ÷ leads</div></div>
+  </div>
+  <div class="cols"><div>
+    <div class="sec"><h2>Clientes</h2><span class="sp"></span>${ADMIN()?`<button class="btn sm" onclick="clientForm()">${ico('plus')}Nuevo cliente</button>`:''}</div>
+    <div class="cgrid">${cl.map((c,i)=>clientCard(c,m,i)).join('')}</div>
+    ${ADMIN()?`<div class="glass card chartcard rise" style="margin-top:20px"><h3>${ico('chart',16)}Piezas publicadas por cliente · ${mLabel(m)}</h3>${chartHTML(cl.map((c,i)=>({l:c.name.split(' ')[0],v:delivs(c.id,m).filter(d=>d.stage==='publicado').length,c:`var(--c${i%6+1})`})))}</div>`:''}
+  </div><div>
+    ${mine.length?`<div class="sec"><h2>Mis pendientes</h2></div><div class="glass card rise" style="padding:10px 14px;margin-bottom:20px">${mine.slice(0,6).map(d=>{const c=clientById(d.clientId);return`<div class="file" style="cursor:pointer" onclick="delivForm('${d.id}')"><div class="th">${ico(STAGE[d.stage].i)}</div><div style="min-width:0;flex:1"><div class="nm">${esc(d.title)}</div><div class="mt">${esc(c?c.name:'')} · ${STAGE[d.stage].n}</div></div><button class="btn xs pri" onclick="event.stopPropagation();advance('${d.id}')">Avanzar</button></div>`}).join('')}</div>`:''}
+    ${ADMIN()?teamPulse(m):''}
+    <div class="sec"><h2>Actividad reciente</h2></div>
+    <div class="glass card rise" style="padding:6px 16px"><div class="feed">${evs.length?evs.map(evHTML).join(''):'<div class="empty" style="margin:14px 0">Aquí aparecerá todo lo que el equipo vaya moviendo.</div>'}</div></div>
+  </div></div>`;
+}
+function clientCard(c,m,i){const p=progress(c,m);return`<div class="cc glass rise" style="animation-delay:${i*.04}s" onclick="openClient('${c.id}')"><div class="h">${logoHTML(c)}<div style="min-width:0"><b>${esc(c.name)}</b><small>${esc(c.sector||'')}</small></div>${ringHTML(p.total)}</div>${barsHTML(p.rows)}</div>`}
+function evHTML(e){const c=clientById(e.clientId);const i={avance:'send',retroceso:'left',entregable:'plus',drive:'drive',ads:'ads',visitas:'eye',resultados:'trophy',borrado:'trash',cliente:'clients',equipo:'users'}[e.type]||'spark';
+  return`<div class="ev"><div class="ic">${ico(i,16)}</div><div style="min-width:0"><p>${esc(e.text)}</p><small>${esc(e.by)}${c?' · '+esc(c.name):''} · ${ago(e.at)}</small></div></div>`}
+function teamPulse(m){
+  const evs=D().events.filter(e=>e.at.slice(0,7)===m&&e.byId);
+  const rows=D().users.filter(u=>u.active).map(u=>({u,n:evs.filter(e=>e.byId===u.id).length,pub:delivs(null,m).filter(d=>d.assignee===u.id&&d.stage==='publicado').length})).sort((a,b)=>(b.u.online-a.u.online)||(b.n-a.n));
+  const max=Math.max(1,...rows.map(r=>r.n)),on=rows.filter(r=>r.u.online).length;
+  return`<div class="sec"><h2>Equipo</h2><span class="sp"></span><span class="tag">${on?'<span class="live"></span>':''}${on} en línea</span></div><div class="glass card rise" style="margin-bottom:20px;display:flex;flex-direction:column;gap:12px">${rows.map(r=>`<div style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="go('equipo')">${avHTML(r.u,'av s',1)}<div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px"><span>${esc(r.u.name)}</span><span class="mono muted">${r.n} mov · ${r.pub} pub</span></div><div class="track" style="height:6px"><div class="fill" style="width:${r.n/max*100}%;background:var(--c1)"></div></div></div></div>`).join('')}</div>`;
+}
+
+// ───────────── Tablero ─────────────
+function vTablero(){
+  const me=D().me,f=S.boardFilter,cl=activeClients();
+  if(!cl.length)return topHTML('Tablero de producción','')+noClients();
+  let ds=delivs(null,S.month).filter(d=>clientById(d.clientId)&&clientById(d.clientId).active!==false);
+  if(f==='mios')ds=ds.filter(d=>d.assignee===me.id);else if(f!=='todos')ds=ds.filter(d=>d.clientId===f);
+  return topHTML('Tablero de producción','Toca "Avanzar" o una etapa para mover cada pieza. Todo queda registrado.')+
+  `<div class="chips rise" style="margin-bottom:18px"><button class="chip${f==='todos'?' on':''}" onclick="S.boardFilter='todos';render()">Todo</button><button class="chip${f==='mios'?' on':''}" onclick="S.boardFilter='mios';render()">${ico('users',16)}Lo mío</button>${cl.map(c=>`<button class="chip${f===c.id?' on':''}" onclick="S.boardFilter='${c.id}';render()">${miniLogo(c)}${esc(c.name)}</button>`).join('')}</div>
+  <div class="board">${STAGES.map((s,si)=>{const list=ds.filter(d=>d.stage===s);return`<div class="colm glass rise" style="animation-delay:${si*.05}s"><div class="ch">${ico(STAGE[s].i)}${STAGE[s].n}<span class="n">${list.length}</span></div>${list.length?list.map(dCard).join(''):`<div class="empty">Nada en ${STAGE[s].n.toLowerCase()}</div>`}</div>`}).join('')}</div>`;
+}
+function dCard(d){const c=clientById(d.clientId),u=userById(d.assignee),i=STAGES.indexOf(d.stage);
+  return`<div class="dc" onclick="delivForm('${d.id}')"><div class="r1"><span class="chip" style="height:26px;padding:0 10px 0 4px;font-size:12px;box-shadow:none;pointer-events:none">${c?miniLogo(c):''}${esc(c?c.name:'—')}</span><span style="flex:1"></span><span class="tag">${ico(typeIcon(d.type),13)}${esc(d.type)}</span></div><div class="tt">${esc(d.title)}</div>
+  <div class="r2">${avHTML(u)}${d.due?`<span class="tag mono">${d.due.slice(8)}/${d.due.slice(5,7)}</span>`:''}${d.driveUrl?`<a class="tag" href="${esc(d.driveUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ico('drive',13)}</a>`:''}<span class="sp"></span>${i>0?`<button class="btn xs icon" title="Regresar" onclick="event.stopPropagation();setStage('${d.id}','${STAGES[i-1]}')">${ico('left',14)}</button>`:''}${i<3?`<button class="btn xs pri" onclick="event.stopPropagation();advance('${d.id}')">Avanzar ${ico('right',14)}</button>`:`<span class="tag w">${ico('check',13)}Listo</span>`}</div></div>`}
+async function setStage(id,stage){
+  const d=D().deliverables.find(x=>x.id===id);if(!d)return;
+  if(stage==='publicado'&&!d.publishUrl)return publishPrompt(d);
+  await act(async()=>{await api('PUT','/api/deliverables/'+id,{stage});await reload()},STAGE[stage].n+': "'+d.title+'"');
+}
+function advance(id){const d=D().deliverables.find(x=>x.id===id);const i=STAGES.indexOf(d.stage);if(i<3)setStage(id,STAGES[i+1])}
+function publishPrompt(d){
+  modal(`<h2>Marcar como publicado</h2><div class="sub">"${esc(d.title)}". Pega el enlace de la publicación para que quede en el historial del cliente.</div>
+  <div class="body"><label class="fld"><span>Enlace de la publicación</span><input class="in" id="pu" placeholder="https://instagram.com/p/..."></label></div>
+  <div class="foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn pri" id="pok">${ico('send')}Publicado</button></div>`);
+  $('#pok').onclick=()=>act(async()=>{await api('PUT','/api/deliverables/'+d.id,{stage:'publicado',publishUrl:$('#pu').value.trim()});closeModal();await reload()},'Publicado: "'+d.title+'"');
+}
+
+// ───────────── Clientes ─────────────
+function vClientes(){
+  const all=D().clients,on=all.filter(c=>c.active!==false),arch=all.filter(c=>c.active===false);
+  return topHTML('Clientes',on.length?on.length+' activos':'',ADMIN()&&on.length?`<button class="btn pri" onclick="clientForm()">${ico('plus')}Nuevo cliente</button>`:'')+
+  (on.length?`<div class="cgrid">${on.map((c,i)=>clientCard(c,S.month,i)).join('')}</div>`:noClients())+
+  (arch.length&&ADMIN()?`<div class="sec" style="margin-top:30px"><h2 class="muted">Archivados</h2></div><div class="chips">${arch.map(c=>`<button class="chip" onclick="clientForm('${c.id}')">${miniLogo(c)}${esc(c.name)}</button>`).join('')}</div>`:'');
+}
+function openClient(id,tab){S.client=id;S.view='cliente';S.ctab=tab||'resumen';render();window.scrollTo({top:0})}
+function vCliente(){
+  const c=clientById(S.client);if(!c){S.view='clientes';return vClientes()}
+  const m=S.month,p=progress(c,m),L=c.links||{};
+  const linkBtn=(u,i,t)=>u?`<a class="btn sm" href="${esc(u)}" target="_blank" rel="noopener">${ico(i,15)}${t}</a>`:'';
+  const tabs={resumen:'Resumen',graficos:'Gráficos',entregables:'Entregables',anuncios:'Anuncios',visitas:'Visitas',drive:'Drive',ficha:'Ficha',historial:'Historial'};
+  const body={resumen:cResumen,graficos:cGraficos,entregables:cEntregables,anuncios:cAnuncios,visitas:cVisitas,drive:cDrive,ficha:cFicha,historial:c=>monthHistory(c.id)}[S.ctab](c,m,p);
+  return`<div class="top rise"><button class="btn sm" onclick="go('clientes')">${ico('left')}Clientes</button><div class="sp"></div>${monthHTML()}</div>
+  <div class="chead glass edge rise">${logoHTML(c)}<div style="flex:1;min-width:220px"><h1>${esc(c.name)}</h1><div class="muted" style="margin-top:6px">${esc([c.sector,c.city,c.plan].filter(Boolean).join(' · '))}</div><div class="links">${linkBtn(L.instagram,'ig','Instagram')}${linkBtn(L.facebook,'globe','Facebook')}${linkBtn(L.tiktok,'video','TikTok')}${linkBtn(L.youtube,'video','YouTube')}${linkBtn(L.landing,'globe','Web')}${linkBtn(L.gmb,'pin','Google')}</div></div>
+   ${ringHTML(p.total)}
+   ${ADMIN()?`<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" onclick="clientForm('${c.id}')">${ico('edit',15)}Editar ficha</button><button class="btn sm" onclick="shareReport('${c.id}')">${ico('link',15)}Reporte del cliente</button></div>`:''}</div>
+  <div class="seg tabs rise">${Object.entries(tabs).map(([k,n])=>`<button class="${S.ctab===k?'on':''}" onclick="S.ctab='${k}';render()">${n}</button>`).join('')}</div>
+  <div class="rise">${body}</div>`;
+}
+function cResumen(c,m,p){
+  const ads=sumAds(c.id,[m]),v=sumVisits(c.id,[m]),vp=sumVisits(c.id,[addM(m,-1)]),f=fluxOf(c.id,m),I=D().integrations,dr=D().drive[c.id];
+  const res=D().results.filter(r=>r.clientId===c.id&&r.month===m);
+  return`<div class="cols"><div>
+    <div class="glass card" style="margin-bottom:18px"><div class="sec" style="margin-top:0"><h2>Avance de ${mLabel(m)}</h2><span class="sp"></span><span class="tag">Meta: ${c.goal} piezas</span></div>${barsHTML(p.rows).replace(/class="bar"/g,'class="bar big"')}</div>
+    <div class="minis" style="margin-bottom:18px">
+      <div class="mini"><div class="l">Inversión Ads</div><div class="v mono">${money(ads.spend)}</div><div class="d">${c.adsBudget?'de '+money(c.adsBudget)+' previstos':'sin presupuesto fijado'}</div></div>
+      <div class="mini"><div class="l">Resultados Ads</div><div class="v mono">${fmt(ads.leads)}</div><div class="d">${ads.leads?money(ads.spend/ads.leads)+' c/u':'—'}</div></div>
+      <div class="mini"><div class="l">Leads en Flux</div><div class="v mono">${f?fmt(f.newLeads):'—'}</div><div class="d">${f?fmt(f.chats)+' chats activos':c.fluxAccountId?'sin sincronizar':'no vinculado'}</div></div>
+      <div class="mini"><div class="l">Desde anuncios</div><div class="v mono">${f&&f.newLeads?pct(ads.leads,f.newLeads)+'%':'—'}</div><div class="d">resultados Ads ÷ leads Flux</div></div>
+      <div class="mini"><div class="l">Visitas</div><div class="v mono">${fmt(v.visits)}</div><div class="d">${vp.visits?delta(v.visits,vp.visits):'redes + web'}</div></div>
+      ${f?`<div class="mini"><div class="l">Citas</div><div class="v mono">${fmt(f.appointmentsDone)}</div><div class="d">${money(f.revenue)} cobrados</div></div>`:''}
+    </div>
+    <div class="charts"><div class="glass chartcard"><h3>${ico('money',16)}Inversión · 6 meses</h3>${chartHTML(lastN(m,6).map(x=>({l:mShort(x),v:sumAds(c.id,[x]).spend})),money,'var(--c1)',5)}</div>
+    <div class="glass chartcard"><h3>${ico('send',16)}Publicadas · 6 meses</h3>${chartHTML(lastN(m,6).map(x=>({l:mShort(x),v:delivs(c.id,x).filter(d=>d.stage==='publicado').length})),fmt,'var(--c4)',5)}</div></div>
+  </div><div>
+    <div class="glass card" style="margin-bottom:18px;display:flex;flex-direction:column;gap:12px">
+      <div class="sec" style="margin:0"><h2>Conexiones</h2></div>
+      <div class="file" style="padding:6px 0"><div class="th">${ico('drive')}</div><div style="flex:1;min-width:0"><div class="nm">Google Drive</div><div class="mt">${!I.drive?'No configurado en el servidor':!c.driveFolder?'Falta la carpeta del cliente':dr?(dr.error?'Error: '+esc(dr.error):dr.files.length+' archivos · '+ago(dr.syncedAt)):'Sin sincronizar'}</div></div>${I.drive&&c.driveFolder?`<button class="btn sm icon" onclick="syncDrive('${c.id}',this)" title="Sincronizar">${ico('sync',15)}</button>`:''}</div>
+      <div class="file" style="padding:6px 0"><div class="th">${ico('flux')}</div><div style="flex:1;min-width:0"><div class="nm">Flux CRM</div><div class="mt">${!I.flux?'No configurado en el servidor':!c.fluxAccountId?'Cliente sin cuenta de Flux':f?'Actualizado '+ago(f.syncedAt):'Sin sincronizar este mes'}</div></div>${I.flux&&c.fluxAccountId?`<button class="btn sm icon" onclick="syncFlux('${c.id}',this)" title="Sincronizar">${ico('sync',15)}</button>`:''}</div>
+    </div>
+    <div class="glass card" style="margin-bottom:18px"><div class="sec" style="margin-top:0"><h2>Resultados del mes</h2><span class="sp"></span>${P('visitas')?`<button class="btn sm icon" onclick="resultForm('${c.id}')">${ico('plus',15)}</button>`:''}</div>
+      ${res.length?res.map(r=>`<div class="file" style="padding:8px 0"><div class="th">${ico('trophy')}</div><div style="flex:1;min-width:0"><div class="nm">${esc(r.kind)}: <span class="mono">${fmt(r.value)}</span></div>${r.notes?`<div class="mt">${esc(r.notes)}</div>`:''}</div>${P('visitas')?`<button class="btn xs icon ghost" onclick="delRow('results','${r.id}')">${ico('x',14)}</button>`:''}</div>`).join(''):'<div class="empty">Ventas, citas o clientes nuevos que el cliente logró este mes.</div>'}
+    </div>
+    <div class="glass card" style="padding:6px 16px"><div class="sec" style="margin:12px 0 4px"><h2>Movimientos</h2></div><div class="feed">${D().events.filter(e=>e.clientId===c.id).slice(-8).reverse().map(evHTML).join('')||'<div class="empty" style="margin:10px 0">Sin movimientos aún.</div>'}</div></div>
+  </div></div>`;
+}
+function cGraficos(c,m){
+  const y12=lastN(m,12),ds=delivs(c.id,m);
+  const cpl=y12.map(x=>{const a=sumAds(c.id,[x]);return{l:mShort(x),v:a.leads?Math.round(a.spend/a.leads*100)/100:0}});
+  const typeCount=TYPES.map((t,i)=>({n:t,v:ds.filter(d=>d.type===t).length,c:`var(--c${i%6+1})`})).filter(x=>x.v);
+  const fl=y12.map(x=>({l:mShort(x),v:(fluxOf(c.id,x)||{}).newLeads||0}));
+  return`<div class="charts">
+   <div class="glass chartcard"><h3>${ico('pie',16)}Piezas por etapa · ${mLabel(m)}</h3>${ds.length?donutHTML(STAGES.map(s=>({n:STAGE[s].n,v:ds.filter(d=>d.stage===s).length,c:STAGE[s].c}))):'<div class="empty" style="margin-top:14px">Sin piezas este mes.</div>'}</div>
+   <div class="glass chartcard"><h3>${ico('image',16)}Piezas por tipo · ${mLabel(m)}</h3>${typeCount.length?donutHTML(typeCount):'<div class="empty" style="margin-top:14px">Sin piezas este mes.</div>'}</div>
+   <div class="glass chartcard"><h3>${ico('send',16)}Piezas publicadas · 12 meses</h3><div class="big mono">${fmt(y12.reduce((a,x)=>a+delivs(c.id,x).filter(d=>d.stage==='publicado').length,0))}</div>${chartHTML(y12.map(x=>({l:mShort(x),v:delivs(c.id,x).filter(d=>d.stage==='publicado').length})),fmt,'var(--c4)',11)}</div>
+   <div class="glass chartcard"><h3>${ico('money',16)}Inversión en anuncios · 12 meses</h3><div class="big mono">${money(sumAds(c.id,y12).spend)}</div>${chartHTML(y12.map(x=>({l:mShort(x),v:sumAds(c.id,[x]).spend})),money,'var(--c1)',11)}</div>
+   <div class="glass chartcard"><h3>${ico('chart',16)}Costo por resultado · 12 meses</h3>${lineHTML(cpl,money,'#FFB547')}</div>
+   <div class="glass chartcard"><h3>${ico('target',16)}Resultados de anuncios · 12 meses</h3>${lineHTML(y12.map(x=>({l:mShort(x),v:sumAds(c.id,[x]).leads})),fmt,'#2FD08A')}</div>
+   <div class="glass chartcard"><h3>${ico('eye',16)}Visitas por canal · 12 meses</h3>${stackHTML(y12,SOURCES.map(s=>({n:s,c:SRC_C[s],vals:y12.map(x=>sumVisits(c.id,[x],s).visits)})))}</div>
+   <div class="glass chartcard"><h3>${ico('chat',16)}Leads en Flux · 12 meses</h3>${fl.some(x=>x.v)?chartHTML(fl,fmt,'var(--c5)',11):`<div class="empty" style="margin-top:14px">${c.fluxAccountId?'Aún sin datos sincronizados.':'Vincula su cuenta de Flux en la ficha.'}</div>`}</div>
+  </div>`;
+}
+function cEntregables(c,m){
+  const ds=delivs(c.id,m).sort((a,b)=>STAGES.indexOf(a.stage)-STAGES.indexOf(b.stage));
+  return`<div class="sec"><h2>${ds.length} pieza(s) en ${mLabel(m)}</h2><span class="sp"></span><button class="btn pri sm" onclick="quickAdd('${c.id}')">${ico('plus',15)}Nueva pieza</button></div>
+  <div class="glass" style="padding:6px 4px">${ds.length?ds.map(d=>{const u=userById(d.assignee);return`<div class="drow"><div style="min-width:0;cursor:pointer" onclick="delivForm('${d.id}')"><div class="tt">${esc(d.title)}</div><div class="meta"><span class="tag">${ico(typeIcon(d.type),13)}${esc(d.type)}</span>${u?`<span class="tag">${esc(u.name.split(' ')[0])}</span>`:''}${d.due?`<span class="tag mono">${d.due}</span>`:''}${d.driveUrl?`<a class="tag" href="${esc(d.driveUrl)}" target="_blank" rel="noopener">${ico('drive',13)}Archivo</a>`:''}${d.publishUrl?`<a class="tag w" href="${esc(d.publishUrl)}" target="_blank" rel="noopener">${ico('ext',13)}Publicación</a>`:''}</div></div>${stepperHTML(d)}<button class="btn sm icon ghost" onclick="delivForm('${d.id}')">${ico('edit',15)}</button></div>`}).join(''):`<div class="empty" style="margin:16px">Aún no hay piezas este mes. Crea la primera con "Nueva pieza".</div>`}</div>`;
+}
+function periodSeg(){return`<div class="seg">${Object.entries(PERIODS).map(([k,n])=>`<button class="${S.period===k?'on':''}" onclick="S.period='${k}';render()">${n}</button>`).join('')}</div>`}
+function cAnuncios(c,m){
+  const ms=monthsOfPeriod(m,S.period),rows=D().ads.filter(a=>a.clientId===c.id&&ms.includes(a.month)).sort((a,b)=>b.month.localeCompare(a.month)),t=sumAds(c.id,ms),f=fluxLeads(c.id,ms);
+  return`<div class="sec">${periodSeg()}<span class="sp"></span>${P('anuncios')?`<button class="btn pri sm" onclick="adForm('${c.id}')">${ico('plus',15)}Registrar inversión</button>`:''}</div>
+  <div class="minis" style="margin-bottom:16px"><div class="mini"><div class="l">${esc(periodLabel(m,S.period))}</div><div class="v mono">${money(t.spend)}</div><div class="d">invertidos</div></div><div class="mini"><div class="l">Resultados</div><div class="v mono">${fmt(t.leads)}</div><div class="d">leads/mensajes</div></div><div class="mini"><div class="l">Costo por resultado</div><div class="v mono">${t.leads?money(t.spend/t.leads):'—'}</div></div><div class="mini"><div class="l">Alcance</div><div class="v mono">${fmt(t.reach)}</div><div class="d">${fmt(t.clicks)} clics</div></div>${f!=null?`<div class="mini"><div class="l">Leads Flux</div><div class="v mono">${fmt(f)}</div><div class="d">${f?pct(t.leads,f)+'% desde anuncios':''}</div></div>`:''}</div>
+  ${S.period!=='mes'?`<div class="glass chartcard" style="margin-bottom:16px">${chartHTML(ms.map(x=>({l:mShort(x),v:sumAds(c.id,[x]).spend})),money)}</div>`:''}
+  <div class="glass scroll">${adsTable(rows)}</div>`;
+}
+function adsTable(rows){return rows.length?`<table class="tbl"><thead><tr><th>Mes</th><th>Plataforma</th><th class="n">Inversión</th><th class="n">Resultados</th><th class="n">Costo/res.</th><th class="n">Alcance</th><th class="n">Clics</th><th></th></tr></thead><tbody>${rows.map(a=>`<tr><td style="text-transform:capitalize">${mLabel(a.month)}</td><td>${esc(a.platform)}</td><td class="n">${money(a.spend)}</td><td class="n">${fmt(a.leads)}</td><td class="n">${a.leads?money(a.spend/a.leads):'—'}</td><td class="n">${fmt(a.reach)}</td><td class="n">${fmt(a.clicks)}</td><td class="n">${P('anuncios')?`<button class="btn xs icon ghost" onclick="adForm('${a.clientId}','${a.id}')">${ico('edit',13)}</button><button class="btn xs icon ghost" onclick="delRow('ads','${a.id}')">${ico('trash',13)}</button>`:''}</td></tr>`).join('')}</tbody></table>`:'<div class="empty" style="margin:16px">Sin inversión registrada en este periodo.</div>'}
+function cVisitas(c,m){
+  const prev=addM(m,-1),y6=lastN(m,6);
+  return`<div class="sec"><h2>Visitas de ${mLabel(m)}</h2><span class="sp"></span>${P('visitas')?`<button class="btn pri sm" onclick="visitForm('${c.id}')">${ico('plus',15)}Registrar visitas</button>`:''}</div>
+  <div class="minis" style="margin-bottom:16px">${SOURCES.map(s=>{const v=sumVisits(c.id,[m],s),p=sumVisits(c.id,[prev],s);if(!v.visits&&!p.visits&&!v.followers)return'';return`<div class="mini"${P('visitas')?` style="cursor:pointer" onclick="visitForm('${c.id}','${s}')"`:''}><div class="l">${s}</div><div class="v mono">${fmt(v.visits)}</div><div class="d">${p.visits?delta(v.visits,p.visits).replace(' vs mes anterior',''):'nuevo'}${v.followers?' · '+fmt(v.followers)+' seguidores':''}</div></div>`}).join('')||'<div class="empty" style="grid-column:1/-1">Registra las visitas de perfil y de la web de este mes.</div>'}</div>
+  <div class="glass chartcard"><h3>${ico('eye',16)}Visitas por canal · 6 meses</h3>${stackHTML(y6,SOURCES.map(s=>({n:s,c:SRC_C[s],vals:y6.map(x=>sumVisits(c.id,[x],s).visits)})))}</div>`;
+}
+function cDrive(c){
+  const I=D().integrations,dr=D().drive[c.id];
+  if(!I.drive)return`<div class="glass card empty">Drive aún no está conectado en el servidor. ${ADMIN()?'En Ajustes está cómo conectarlo.':'El fundador lo conectará.'}</div>`;
+  if(!c.driveFolder)return`<div class="glass card empty">Este cliente no tiene carpeta de Drive.${ADMIN()?`<br><br><button class="btn sm" onclick="clientForm('${c.id}',3)">Agregar carpeta</button>`:''}</div>`;
+  const used=new Set(D().deliverables.map(d=>d.driveFileId).filter(Boolean)),files=dr?dr.files:[],groups={};
+  files.forEach(f=>{(groups[f.folder||'Carpeta principal']=groups[f.folder||'Carpeta principal']||[]).push(f)});
+  const fid=(c.driveFolder.match(/[A-Za-z0-9_-]{20,}/)||[''])[0];
+  return`<div class="sec"><h2>${files.length} archivo(s)</h2><span class="muted" style="font-size:13px">${dr?'actualizado '+ago(dr.syncedAt):''}</span><span class="sp"></span>${fid?`<a class="btn sm" href="https://drive.google.com/drive/folders/${esc(fid)}" target="_blank" rel="noopener">${ico('ext',15)}Abrir carpeta</a>`:''}<button class="btn pri sm" onclick="syncDrive('${c.id}',this)">${ico('sync',15)}Sincronizar</button></div>
+  ${dr&&dr.error?`<div class="glass card" style="margin-bottom:14px">${ico('info')} ${esc(dr.error)}</div>`:''}
+  ${Object.entries(groups).map(([g,fs])=>`<div class="glass card" style="margin-bottom:14px;padding:14px"><div style="font-weight:700;margin:0 6px 8px;display:flex;align-items:center;gap:8px" class="tx2">${ico('drive',15)}${esc(g)}<span class="muted mono" style="font-size:12px">${fs.length}</span></div>${fs.slice(0,60).map(f=>`<div class="file"><div class="th"${f.thumb?` style="background-image:url('${esc(f.thumb)}')"`:''}>${f.thumb?'':ico(f.mime.includes('video')?'video':f.mime.includes('image')?'image':'file')}</div><div style="flex:1;min-width:0"><div class="nm">${esc(f.name)}</div><div class="mt">${f.by?esc(f.by)+' · ':''}${ago(f.modified)}</div></div><a class="btn xs icon ghost" href="${esc(f.link)}" target="_blank" rel="noopener">${ico('ext',13)}</a>${used.has(f.id)?`<span class="tag w">${ico('check',13)}En tablero</span>`:`<button class="btn xs" onclick="fromDrive('${c.id}','${f.id}')">${ico('plus',13)}Al tablero</button>`}</div>`).join('')}</div>`).join('')||'<div class="glass card empty">Pulsa "Sincronizar" para traer los archivos.</div>'}`;
+}
+function cFicha(c){
+  const row=(l,v)=>v?`<div><span>${l}</span><p>${esc(v)}</p></div>`:'';
+  const L=c.links||{};
+  return`<div class="glass card" style="margin-bottom:16px"><div class="sec" style="margin-top:0"><h2>Empresa</h2>${ADMIN()?`<span class="sp"></span><button class="btn sm" onclick="clientForm('${c.id}')">${ico('edit',15)}Editar</button>`:''}</div><div class="info">${row('Nombre comercial',c.name)}${row('Razón social',c.legalName)}${row('RIF',c.rif)}${row('Rubro',c.sector)}${row('Ciudad',c.city)}${row('Dirección',c.address)}${row('Colores de marca',c.brandColors)}${row('Descripción',c.description)}</div></div>
+  <div class="glass card" style="margin-bottom:16px"><div class="sec" style="margin-top:0"><h2>Contacto</h2></div><div class="info">${row('Persona de contacto',c.contactName)}${row('Cargo',c.contactRole)}${row('Teléfono / WhatsApp',c.phone)}${row('Correo',c.email)}</div></div>
+  <div class="glass card" style="margin-bottom:16px"><div class="sec" style="margin-top:0"><h2>Plan y metas</h2></div><div class="info">${row('Cliente desde',fdate(c.startDate))}${row('Plan',c.plan)}${c.fee!=null?row('Fee mensual',money(c.fee)):''}${row('Piezas al mes',String(c.goal))}${row('Presupuesto de anuncios',c.adsBudget?money(c.adsBudget)+' al mes':'')}${row('Servicios incluidos',c.services)}${row('Objetivo principal',c.goalText)}${row('Público objetivo',c.audience)}${row('Competencia',c.competitors)}${row('Notas internas',c.notes)}</div></div>
+  <div class="glass card"><div class="sec" style="margin-top:0"><h2>Canales y conexiones</h2></div><div class="info">${['instagram','facebook','tiktok','youtube','landing','gmb'].map(k=>L[k]?`<div><span>${{instagram:'Instagram',facebook:'Facebook',tiktok:'TikTok',youtube:'YouTube',landing:'Web / landing',gmb:'Google'}[k]}</span><p><a href="${esc(L[k])}" target="_blank" rel="noopener">${esc(L[k].replace(/^https?:\/\/(www\.)?/,''))}</a></p></div>`:'').join('')}${row('Carpeta de Drive',c.driveFolder?'Vinculada':'')}${row('Cuenta de Flux',c.fluxAccountId?'#'+c.fluxAccountId:'')}</div></div>`;
+}
+function monthHistory(cid){
+  const src=[...D().deliverables,...D().ads,...D().visits,...D().results].filter(x=>!cid||x.clientId===cid);
+  const months=[...new Set(src.map(x=>x.month))].sort().reverse();
+  if(!months.length)return'<div class="glass card empty">El historial se irá llenando solo con cada pieza, inversión y resultado.</div>';
+  const allD=delivs(cid).filter(d=>d.stage==='publicado'),allA=sumAds(cid,months),allF=fluxLeads(cid,months);
+  return`<div class="minis" style="margin-bottom:18px"><div class="mini"><div class="l">Piezas entregadas</div><div class="v mono">${fmt(allD.length)}</div><div class="d">desde ${mLabel(months[months.length-1])}</div></div><div class="mini"><div class="l">Invertido en Ads</div><div class="v mono">${money(allA.spend)}</div></div><div class="mini"><div class="l">Resultados de Ads</div><div class="v mono">${fmt(allA.leads)}</div></div>${allF!=null?`<div class="mini"><div class="l">Leads en Flux</div><div class="v mono">${fmt(allF)}</div></div>`:''}</div>`+
+  months.map(m=>{const ds=delivs(cid,m),pub=ds.filter(d=>d.stage==='publicado'),a=sumAds(cid,[m]),v=sumVisits(cid,[m]),f=fluxLeads(cid,[m]),res=D().results.filter(r=>(!cid||r.clientId===cid)&&r.month===m);
+    return`<div class="month-hist glass rise"><h3>${ico('clock')}${mLabel(m)}<span style="flex:1"></span><span class="tag">${pub.length}/${ds.length} publicadas</span></h3>
+    <div class="minis" style="margin:14px 0"><div class="mini"><div class="l">Inversión</div><div class="v mono" style="font-size:18px">${money(a.spend)}</div></div><div class="mini"><div class="l">Res. Ads</div><div class="v mono" style="font-size:18px">${fmt(a.leads)}</div></div><div class="mini"><div class="l">Visitas</div><div class="v mono" style="font-size:18px">${fmt(v.visits)}</div></div>${f!=null?`<div class="mini"><div class="l">Leads Flux</div><div class="v mono" style="font-size:18px">${fmt(f)}</div></div>`:''}${res.map(r=>`<div class="mini"><div class="l">${esc(r.kind)}</div><div class="v mono" style="font-size:18px">${fmt(r.value)}</div></div>`).join('')}</div>
+    ${pub.length?`<div class="chips">${pub.map(d=>{const cc=clientById(d.clientId),lbl=ico(typeIcon(d.type),15)+(cid?'':esc(cc?cc.name+' · ':''))+esc(d.title);return d.publishUrl?`<a class="chip" style="height:34px;font-size:13px" href="${esc(d.publishUrl)}" target="_blank" rel="noopener">${lbl}</a>`:`<span class="chip" style="height:34px;font-size:13px;cursor:default">${lbl}</span>`}).join('')}</div>`:'<div class="muted" style="font-size:13px">Sin piezas publicadas.</div>'}</div>`}).join('');
+}
+
+// ───────────── Anuncios / Visitas / Historial ─────────────
+function vAnuncios(){
+  const ms=monthsOfPeriod(S.month,S.period),cl=activeClients(),t=sumAds(null,ms),f=fluxLeads(null,ms);
+  if(!cl.length)return topHTML('Anuncios','')+noClients();
+  const y=S.month.slice(0,4),year=Array.from({length:12},(_,i)=>y+'-'+String(i+1).padStart(2,'0'));
+  return topHTML('Anuncios','Inversión y resultados de cada cliente · '+esc(periodLabel(S.month,S.period)),P('anuncios')?`<button class="btn pri" onclick="adForm()">${ico('plus')}Registrar inversión</button>`:'')+
+  `<div class="sec rise">${periodSeg()}</div>
+  <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"><div class="kpi glass edge hero rise"><div class="l"><span class="ic">${ico('money',16)}</span>Inversión total</div><div class="v mono">${money(t.spend)}</div><div class="d">${esc(periodLabel(S.month,S.period))}</div></div><div class="kpi glass rise"><div class="l"><span class="ic">${ico('target',16)}</span>Resultados</div><div class="v mono">${fmt(t.leads)}</div><div class="d">${t.leads?money(t.spend/t.leads)+' por resultado':''}</div></div><div class="kpi glass rise"><div class="l"><span class="ic">${ico('eye',16)}</span>Alcance</div><div class="v mono">${fmt(t.reach)}</div><div class="d">${fmt(t.clicks)} clics</div></div><div class="kpi glass rise"><div class="l"><span class="ic">${ico('chat',16)}</span>Leads en Flux</div><div class="v mono">${f!=null?fmt(f):'—'}</div><div class="d">${f?pct(t.leads,f)+'% vinieron de anuncios':'Flux sin conectar'}</div></div></div>
+  <div class="charts" style="margin-bottom:18px"><div class="glass chartcard rise"><h3>${ico('chart',16)}Inversión mensual ${y}</h3>${chartHTML(year.map(x=>({l:mShort(x),v:sumAds(null,[x]).spend})),money,'var(--c1)',year.indexOf(S.month))}</div>
+  <div class="glass chartcard rise"><h3>${ico('pie',16)}Reparto por cliente</h3>${t.spend?donutHTML(cl.map((c,i)=>({n:c.name,v:Math.round(sumAds(c.id,ms).spend),c:`var(--c${i%6+1})`})).filter(x=>x.v)):'<div class="empty" style="margin-top:14px">Sin inversión en este periodo.</div>'}</div></div>
+  <div class="glass scroll rise"><table class="tbl"><thead><tr><th>Cliente</th><th class="n">Presupuesto</th><th class="n">Inversión</th><th class="n">Resultados</th><th class="n">Costo/res.</th><th class="n">Leads Flux</th><th class="n">Alcance</th></tr></thead><tbody>${cl.map(c=>{const a=sumAds(c.id,ms),fl=fluxLeads(c.id,ms);return`<tr style="cursor:pointer" onclick="openClient('${c.id}','anuncios')"><td><div class="cl">${logoHTML(c)}${esc(c.name)}</div></td><td class="n">${c.adsBudget?money(c.adsBudget*ms.length):'—'}</td><td class="n">${money(a.spend)}</td><td class="n">${fmt(a.leads)}</td><td class="n">${a.leads?money(a.spend/a.leads):'—'}</td><td class="n">${fl!=null?fmt(fl):'—'}</td><td class="n">${fmt(a.reach)}</td></tr>`}).join('')}</tbody><tfoot><tr><td>Total</td><td class="n">${money(cl.reduce((s,c)=>s+(c.adsBudget||0),0)*ms.length)}</td><td class="n">${money(t.spend)}</td><td class="n">${fmt(t.leads)}</td><td class="n">${t.leads?money(t.spend/t.leads):'—'}</td><td class="n">${f!=null?fmt(f):'—'}</td><td class="n">${fmt(t.reach)}</td></tr></tfoot></table></div>`;
+}
+function vVisitas(){
+  const m=S.month,p=addM(m,-1),cl=activeClients(),y12=lastN(m,12);
+  if(!cl.length)return topHTML('Visitas','')+noClients();
+  const cell=(c,s)=>{const v=sumVisits(c.id,[m],s).visits,pv=sumVisits(c.id,[p],s).visits;return`<td class="n">${v?fmt(v):'<span class="muted">—</span>'}${v&&pv?`<div style="font-size:11px" class="muted">${v>=pv?'+':'−'}${Math.abs(Math.round((v-pv)/pv*100))}%</div>`:''}</td>`};
+  return topHTML('Visitas','Perfiles en redes y webs de cada cliente',P('visitas')?`<button class="btn pri" onclick="visitForm()">${ico('plus')}Registrar visitas</button>`:'')+
+  `<div class="glass scroll rise"><table class="tbl"><thead><tr><th>Cliente</th>${SOURCES.map(s=>`<th class="n">${s}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>${cl.map(c=>`<tr style="cursor:pointer" onclick="openClient('${c.id}','visitas')"><td><div class="cl">${logoHTML(c)}${esc(c.name)}</div></td>${SOURCES.map(s=>cell(c,s)).join('')}<td class="n"><b>${fmt(sumVisits(c.id,[m]).visits)}</b></td></tr>`).join('')}</tbody></table></div>
+  <div class="glass chartcard rise" style="margin-top:18px"><h3>${ico('eye',16)}Visitas por canal · 12 meses</h3>${stackHTML(y12,SOURCES.map(s=>({n:s,c:SRC_C[s],vals:y12.map(x=>sumVisits(null,[x],s).visits)})))}</div>`;
+}
+function vHistorial(){
+  const f=S.histClient||'';
+  return topHTML('Historial','Todo lo entregado y logrado, mes a mes','',false)+
+  `<div class="chips rise" style="margin-bottom:18px"><button class="chip${!f?' on':''}" onclick="S.histClient='';render()">Toda la agencia</button>${activeClients().map(c=>`<button class="chip${f===c.id?' on':''}" onclick="S.histClient='${c.id}';render()">${miniLogo(c)}${esc(c.name)}</button>`).join('')}</div>`+monthHistory(f||null);
+}
+
+// ───────────── Equipo (panel maestro) ─────────────
+function vEquipo(){
+  if(!ADMIN())return'';
+  const m=S.month,us=D().users.slice().sort((a,b)=>(b.online-a.online)||(b.active-a.active)||a.name.localeCompare(b.name)),on=us.filter(u=>u.online&&u.active);
+  return topHTML('Equipo','Miembros, permisos y quién está conectado ahora',`<button class="btn pri" onclick="userForm()">${ico('plus')}Nuevo miembro</button>`)+
+  `<div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="kpi glass edge hero rise"><div class="l"><span class="ic">${ico('users',16)}</span>En línea ahora</div><div class="v mono">${on.length}</div><div class="d">${on.map(u=>esc(u.name.split(' ')[0])).join(', ')||'nadie conectado'}</div></div><div class="kpi glass rise"><div class="l"><span class="ic">${ico('shield',16)}</span>Miembros activos</div><div class="v mono">${us.filter(u=>u.active).length}</div><div class="d">${us.filter(u=>!u.active).length} sin acceso</div></div><div class="kpi glass rise"><div class="l"><span class="ic">${ico('spark',16)}</span>Movimientos del mes</div><div class="v mono">${D().events.filter(e=>e.at.slice(0,7)===m&&e.byId).length}</div><div class="d">${mLabel(m)}</div></div></div>
+  <div class="glass scroll rise"><table class="tbl"><thead><tr><th>Miembro</th><th>Estado</th><th>Área</th><th>Permisos</th><th class="n">Mov. mes</th><th class="n">Piezas</th><th></th></tr></thead><tbody>${us.map(u=>{const evs=D().events.filter(e=>e.byId===u.id&&e.at.slice(0,7)===m).length,ds=delivs(null,m).filter(d=>d.assignee===u.id);
+    return`<tr style="${u.active?'':'opacity:.45'}"><td><div class="cl">${avHTML(u,'av',1)}<div><b>${esc(u.name)}</b><div class="muted mono" style="font-size:12px">@${esc(u.user)}</div></div></div></td>
+    <td>${!u.active?'<span class="tag">Sin acceso</span>':u.online?`<span class="tag w"><span class="live" style="background:#000;box-shadow:none"></span>En línea · ${u.panel==='admin'?'panel maestro':'equipo'}</span>`:`<span class="muted" style="font-size:13px">${ago(u.lastSeen)}</span>`}</td>
+    <td>${u.role==='fundador'?'<span class="tag w">Fundador</span>':esc(u.area||'—')}</td>
+    <td style="font-size:12.5px" class="tx2">${u.role==='fundador'?'Todo':Object.keys(PERMS).filter(k=>u.perms[k]).map(k=>PERMS[k][0]).join(', ')||'Solo producción'}</td>
+    <td class="n">${evs}</td><td class="n">${ds.filter(d=>d.stage==='publicado').length}/${ds.length}</td>
+    <td class="n" style="white-space:nowrap">${u.online&&u.id!==D().me.id?`<button class="btn xs" onclick="kick('${u.id}')">${ico('logout',13)}Cerrar sesión</button> `:''}<button class="btn xs icon" onclick="userForm('${u.id}')">${ico('edit',13)}</button></td></tr>`}).join('')}</tbody></table></div>
+  <div class="sec" style="margin-top:24px"><h2>Actividad del equipo</h2></div>
+  <div class="glass card" style="padding:6px 16px"><div class="feed">${D().events.filter(e=>e.byId).slice(-20).reverse().map(evHTML).join('')||'<div class="empty" style="margin:14px 0">Sin actividad todavía.</div>'}</div></div>`;
+}
+function kick(id){const u=userById(id);if(!confirm('¿Cerrar la sesión de '+u.name+'? Tendrá que volver a entrar.'))return;act(async()=>{await api('POST','/api/users/'+id+'/logout');await reload()},'Sesión cerrada')}
+
+// ───────────── Ajustes ─────────────
+function vAjustes(){
+  const I=D().integrations;
+  return topHTML('Ajustes','',`<button class="btn ghost" onclick="logout()">${ico('logout')}Salir</button>`,false)+
+  `<div class="grid2">
+  <div class="glass card rise"><div class="sec" style="margin-top:0"><h2>Mi clave</h2></div><form id="pf" style="display:flex;flex-direction:column;gap:14px"><label class="fld"><span>Clave actual</span><input class="in" type="password" name="current" required autocomplete="current-password"></label><label class="fld"><span>Nueva clave</span><input class="in" type="password" name="pass" minlength="8" required autocomplete="new-password"></label><button class="btn pri">${ico('key')}Cambiar clave</button></form></div>
+  ${ADMIN()?`<div class="glass card rise"><div class="sec" style="margin-top:0"><h2>Meta mensual por defecto</h2></div><p class="muted" style="margin-bottom:14px;font-size:14px">Piezas al mes que se sugieren al crear un cliente.</p><div style="display:flex;gap:10px"><input class="in mono" id="dg" type="number" min="1" max="200" value="${D().settings.defaultGoal}" style="max-width:140px"><button class="btn" onclick="act(async()=>{await api('PUT','/api/settings',{defaultGoal:$('#dg').value});await reload()},'Guardado')">Guardar</button></div></div>
+  <div class="glass card rise"><div class="sec" style="margin-top:0"><h2>Google Drive</h2><span class="sp"></span><span class="tag${I.drive?' w':''}">${I.drive?'Conectado':'Pendiente'}</span></div>${I.drive?`<p class="tx2" style="font-size:14px">Comparte la carpeta de cada cliente (como lector) con:<br><b class="mono" style="font-size:12.5px;word-break:break-all;color:#fff">${esc(I.driveEmail)}</b><br><br>Se revisan cada 30 minutos y avisa cuando el equipo sube algo nuevo.</p>`:`<p class="tx2" style="font-size:14px">Falta la variable <b class="mono">GOOGLE_SERVICE_ACCOUNT_JSON</b> en el servidor.</p>`}</div>
+  <div class="glass card rise"><div class="sec" style="margin-top:0"><h2>Flux CRM</h2><span class="sp"></span><span class="tag${I.flux?' w':''}">${I.flux?'Conectado':'Pendiente'}</span></div>${I.flux?`<p class="tx2" style="font-size:14px">Leyendo de <b class="mono" style="color:#fff">${esc(I.fluxUrl)}</b> cada hora. Vincula cada cliente con su cuenta de Flux desde su ficha.</p>`:`<p class="tx2" style="font-size:14px">Faltan <b class="mono">FLUX_API_URL</b> y <b class="mono">FLUX_ECOSISTEMA_TOKEN</b> en el servidor.</p>`}</div>`:`<div class="glass card rise"><div class="sec" style="margin-top:0"><h2>Mis permisos</h2></div>${Object.entries(PERMS).map(([k,[n,d]])=>`<div class="perm" style="margin-bottom:8px"><div><b>${n}</b><small>${d}</small></div><span class="tag${P(k)?' w':''}">${P(k)?'Sí':'No'}</span></div>`).join('')}</div>`}
+  </div>`;
+}
+document.addEventListener('submit',async e=>{if(e.target.id!=='pf')return;e.preventDefault();const f=new FormData(e.target);await act(async()=>{const r=await api('POST','/api/me/password',{current:f.get('current'),pass:f.get('pass')});S.token=r.token;localStorage.setItem(TKEY,r.token);e.target.reset()},'Clave cambiada')});
+
+// ───────────── Modales y formularios ─────────────
+function modal(html,wide){closeModal();const o=document.createElement('div');o.className='ov';o.id='ov';o.innerHTML=`<div class="modal glass edge${wide?' wide':''}">${html}</div>`;o.onclick=e=>{if(e.target===o)closeModal()};document.body.appendChild(o);const f=o.querySelector('input:not([type=hidden]):not([type=file]),textarea');if(f&&window.innerWidth>860)setTimeout(()=>f.focus(),50)}
+function closeModal(){const o=$('#ov');if(o)o.remove()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+function bindChips(sel,cb){document.querySelectorAll(sel+' [data-v]').forEach(b=>b.onclick=()=>{document.querySelectorAll(sel+' [data-v]').forEach(x=>x.classList.remove('on'));b.classList.add('on');cb&&cb(b.dataset.v)})}
+const pick=sel=>{const b=document.querySelector(sel+' .on');return b?b.dataset.v:''};
+const monthOpts=sel=>Array.from({length:15},(_,i)=>addM(thisMonth(),2-i)).map(x=>`<option value="${x}"${x===sel?' selected':''}>${mLabel(x)}</option>`).join('');
+
+function quickAdd(cid,extra){
+  const cl=activeClients();if(!cl.length)return;
+  cid=cid||S.client||(cl.length===1?cl[0].id:'');extra=extra||{};
+  modal(`<h2>Registrar avance</h2><div class="sub">Elige el cliente, el tipo de pieza y en qué etapa va.</div><div class="body">
+   <div class="fld"><span>Cliente</span><div class="chips" id="qc">${cl.map(c=>`<button class="chip${c.id===cid?' on':''}" data-v="${c.id}">${miniLogo(c)}${esc(c.name)}</button>`).join('')}</div></div>
+   <div class="fld"><span>Tipo</span><div class="chips" id="qt">${TYPES.map(t=>`<button class="chip${t===(extra.type||'Reel')?' on':''}" data-v="${t}">${ico(typeIcon(t),15)}${t}</button>`).join('')}</div></div>
+   <label class="fld"><span>¿Qué es?</span><input class="in" id="qn" placeholder="Ej: Reel testimonio de cliente" value="${esc(extra.title||'')}"></label>
+   <div class="fld"><span>Etapa</span><div class="seg" id="qs" style="width:100%">${STAGES.map(s=>`<button class="${s===(extra.stage||'idea')?'on':''}" data-v="${s}" style="flex:1">${STAGE[s].n}</button>`).join('')}</div></div>
+   <div class="grid2"><label class="fld"><span>Responsable</span><select class="in" id="qa">${D().users.filter(u=>u.active).map(u=>`<option value="${u.id}"${u.id===D().me.id?' selected':''}>${esc(u.name)}</option>`).join('')}</select></label><label class="fld"><span>Mes</span><select class="in" id="qm">${monthOpts(S.month)}</select></label></div>
+   <label class="fld"><span>Enlace de Drive (opcional)</span><input class="in" id="qd" placeholder="https://drive.google.com/..." value="${esc(extra.driveUrl||'')}"></label>
+  </div><div class="foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn pri" id="qok" style="height:50px">${ico('check')}Guardar</button></div>`);
+  bindChips('#qc');bindChips('#qt');bindChips('#qs');
+  $('#qok').onclick=()=>{const clientId=pick('#qc');if(!clientId)return toast('Elige el cliente',true);if(!$('#qn').value.trim())return toast('Escribe qué es la pieza',true);
+    act(async()=>{await api('POST','/api/deliverables',{clientId,type:pick('#qt'),title:$('#qn').value,stage:pick('#qs'),assignee:$('#qa').value,month:$('#qm').value,driveUrl:$('#qd').value.trim(),driveFileId:extra.driveFileId});closeModal();await reload()},'Registrado')};
+}
+function fromDrive(cid,fid){const f=D().drive[cid].files.find(x=>x.id===fid);quickAdd(cid,{title:f.name.replace(/\.[a-z0-9]{2,4}$/i,''),driveUrl:f.link,driveFileId:f.id,type:f.mime.includes('video')?'Reel':f.mime.includes('image')?'Post':'Otro',stage:'edicion'})}
+function delivForm(id){
+  const d=D().deliverables.find(x=>x.id===id);if(!d)return;
+  const c=clientById(d.clientId),canDel=P('borrar')||d.createdBy===D().me.id;
+  const hist=(d.history||[]).map(h=>{const u=userById(h.by);return`<div class="ev"><div class="ic">${ico(STAGE[h.stage].i,15)}</div><div><p>${STAGE[h.stage].n}</p><small>${esc(u?u.name:'')} · ${new Date(h.at).toLocaleString('es-VE',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</small></div></div>`}).reverse().join('');
+  modal(`<h2>${esc(d.title)}</h2><div class="sub">${esc(c?c.name:'')} · ${mLabel(d.month)}</div><div class="body">
+   ${stepperHTML(d).replace(/setStage\(/g,'closeModal();setStage(')}
+   <label class="fld"><span>Título</span><input class="in" id="et" value="${esc(d.title)}"></label>
+   <div class="grid3"><label class="fld"><span>Tipo</span><select class="in" id="ety">${TYPES.map(t=>`<option${t===d.type?' selected':''}>${t}</option>`).join('')}</select></label><label class="fld"><span>Responsable</span><select class="in" id="ea">${D().users.map(u=>`<option value="${u.id}"${u.id===d.assignee?' selected':''}>${esc(u.name)}</option>`).join('')}</select></label><label class="fld"><span>Entrega</span><input class="in" type="date" id="ed" value="${d.due||''}"></label></div>
+   <div class="grid2"><label class="fld"><span>Drive</span><input class="in" id="edr" value="${esc(d.driveUrl||'')}" placeholder="https://drive.google.com/..."></label><label class="fld"><span>Publicación</span><input class="in" id="epu" value="${esc(d.publishUrl||'')}" placeholder="https://..."></label></div>
+   <label class="fld"><span>Mes</span><select class="in" id="em">${monthOpts(d.month)}</select></label>
+   <label class="fld"><span>Notas</span><textarea class="in" id="en">${esc(d.notes||'')}</textarea></label>
+   <div class="fld"><span>Recorrido</span><div class="feed">${hist}</div></div>
+  </div><div class="foot">${canDel?`<button class="btn ghost" onclick="delDeliv('${d.id}')">${ico('trash')}Eliminar</button>`:''}<span class="sp"></span><button class="btn ghost" onclick="closeModal()">Cerrar</button><button class="btn pri" id="eok">${ico('check')}Guardar</button></div>`);
+  $('#eok').onclick=()=>act(async()=>{await api('PUT','/api/deliverables/'+id,{title:$('#et').value,type:$('#ety').value,assignee:$('#ea').value,due:$('#ed').value,driveUrl:$('#edr').value.trim(),publishUrl:$('#epu').value.trim(),month:$('#em').value,notes:$('#en').value});closeModal();await reload()},'Guardado');
+}
+function delDeliv(id){if(!confirm('¿Eliminar esta pieza? Se quitará del tablero y del historial.'))return;act(async()=>{await api('DELETE','/api/deliverables/'+id);closeModal();await reload()},'Eliminada')}
+function delRow(kind,id){if(!confirm('¿Eliminar este registro?'))return;act(async()=>{await api('DELETE','/api/'+kind+'/'+id);await reload()},'Eliminado')}
+const clientSelect=(id,sel)=>`<label class="fld"><span>Cliente</span><select class="in" id="${id}">${activeClients().map(c=>`<option value="${c.id}"${c.id===sel?' selected':''}>${esc(c.name)}</option>`).join('')}</select></label>`;
+function adForm(cid,rowId){
+  const r=rowId?D().ads.find(a=>a.id===rowId):null;cid=cid||S.client||(activeClients()[0]||{}).id;if(!cid)return;
+  modal(`<h2>${r?'Editar':'Registrar'} inversión en anuncios</h2><div class="sub">Un registro por plataforma y mes. Si ya existe, se actualiza.</div><div class="body">
+   <div class="grid2">${clientSelect('ac',r?r.clientId:cid)}<label class="fld"><span>Mes</span><select class="in" id="am">${monthOpts(r?r.month:S.month)}</select></label></div>
+   <div class="fld"><span>Plataforma</span><div class="seg" id="ap">${PLATFORMS.map(p=>`<button class="${p===(r?r.platform:'Meta Ads')?'on':''}" data-v="${p}">${p}</button>`).join('')}</div></div>
+   <div class="grid2"><label class="fld"><span>Inversión (USD)</span><input class="in mono" id="as" type="number" step="0.01" min="0" value="${r?r.spend:''}"></label><label class="fld"><span>Resultados (leads/mensajes)</span><input class="in mono" id="al" type="number" min="0" value="${r?r.leads:''}"></label></div>
+   <div class="grid3"><label class="fld"><span>Alcance</span><input class="in mono" id="ar" type="number" min="0" value="${r?r.reach:''}"></label><label class="fld"><span>Impresiones</span><input class="in mono" id="ai" type="number" min="0" value="${r?r.impressions:''}"></label><label class="fld"><span>Clics</span><input class="in mono" id="ak" type="number" min="0" value="${r?r.clicks:''}"></label></div>
+   <label class="fld"><span>Notas</span><input class="in" id="an" value="${esc(r?r.notes:'')}" placeholder="Campaña, objetivo..."></label>
+  </div><div class="foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn pri" id="aok">${ico('check')}Guardar</button></div>`);
+  bindChips('#ap');
+  $('#aok').onclick=()=>act(async()=>{await api('POST','/api/ads',{clientId:$('#ac').value,month:$('#am').value,platform:pick('#ap'),spend:$('#as').value,leads:$('#al').value,reach:$('#ar').value,impressions:$('#ai').value,clicks:$('#ak').value,notes:$('#an').value});closeModal();await reload()},'Inversión guardada');
+}
+function visitForm(cid,src){
+  cid=cid||S.client||(activeClients()[0]||{}).id;if(!cid)return;
+  const load=()=>{const r=D().visits.find(v=>v.clientId===$('#vc').value&&v.month===$('#vm').value&&v.source===pick('#vs'));$('#vv').value=r?r.visits:'';$('#vf').value=r?r.followers:'';$('#vi').value=r?r.interactions:''};
+  modal(`<h2>Registrar visitas</h2><div class="sub">Visitas al perfil o a la web, seguidores al cierre del mes e interacciones.</div><div class="body">
+   <div class="grid2">${clientSelect('vc',cid)}<label class="fld"><span>Mes</span><select class="in" id="vm">${monthOpts(S.month)}</select></label></div>
+   <div class="fld"><span>Dónde</span><div class="seg" id="vs">${SOURCES.map(s=>`<button class="${s===(src||'Instagram')?'on':''}" data-v="${s}">${s}</button>`).join('')}</div></div>
+   <div class="grid3"><label class="fld"><span>Visitas</span><input class="in mono" id="vv" type="number" min="0"></label><label class="fld"><span>Seguidores</span><input class="in mono" id="vf" type="number" min="0"></label><label class="fld"><span>Interacciones</span><input class="in mono" id="vi" type="number" min="0"></label></div>
+  </div><div class="foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn pri" id="vok">${ico('check')}Guardar</button></div>`);
+  bindChips('#vs',load);$('#vc').onchange=load;$('#vm').onchange=load;load();
+  $('#vok').onclick=()=>act(async()=>{await api('POST','/api/visits',{clientId:$('#vc').value,month:$('#vm').value,source:pick('#vs'),visits:$('#vv').value,followers:$('#vf').value,interactions:$('#vi').value});closeModal();await reload()},'Visitas guardadas');
+}
+function resultForm(cid){
+  modal(`<h2>Registrar resultado</h2><div class="sub">Lo que el cliente logró gracias al trabajo del mes.</div><div class="body">
+   <div class="grid2">${clientSelect('rc',cid)}<label class="fld"><span>Mes</span><select class="in" id="rm">${monthOpts(S.month)}</select></label></div>
+   <div class="fld"><span>Tipo</span><div class="chips" id="rk">${RESULT_KINDS.map((k,i)=>`<button class="chip${i===0?' on':''}" data-v="${k}">${k}</button>`).join('')}</div></div>
+   <div class="grid2"><label class="fld"><span>Cantidad</span><input class="in mono" id="rv" type="number" step="0.01" min="0"></label><label class="fld"><span>Detalle</span><input class="in" id="rn" placeholder="Ej: 14 ventas por WhatsApp"></label></div>
+  </div><div class="foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn pri" id="rok">${ico('check')}Guardar</button></div>`);
+  bindChips('#rk');
+  $('#rok').onclick=()=>act(async()=>{await api('POST','/api/results',{clientId:$('#rc').value,month:$('#rm').value,kind:pick('#rk'),value:$('#rv').value,notes:$('#rn').value});closeModal();await reload()},'Resultado guardado');
+}
+
+// ── Ficha completa del cliente (asistente de 4 pasos, todo obligatorio salvo lo marcado) ──
+const CF_STEPS=['Identidad','Contacto','Plan y metas','Canales'];
+const CF=[
+  [{k:'logo',t:'logo'},{k:'name',n:'Nombre comercial',r:1},{k:'legalName',n:'Razón social',r:1},{k:'rif',n:'RIF',r:1,ph:'J-12345678-9'},{k:'sector',n:'Rubro',r:1,ph:'Restaurante, clínica, tienda...'},{k:'city',n:'Ciudad',r:1,ph:'Barinas'},{k:'address',n:'Dirección',r:1,full:1},{k:'description',n:'Descripción del negocio',t:'area',full:1,ph:'Qué vende, qué lo hace distinto'},{k:'brandColors',n:'Colores de su marca',ph:'Ej: negro y dorado'}],
+  [{k:'contactName',n:'Persona de contacto',r:1},{k:'contactRole',n:'Cargo',r:1,ph:'Dueño, gerente...'},{k:'phone',n:'Teléfono / WhatsApp',r:1,ph:'+58 414 0000000',type:'tel'},{k:'email',n:'Correo',r:1,type:'email'}],
+  [{k:'startDate',n:'Cliente desde',r:1,type:'date'},{k:'plan',n:'Plan contratado',r:1,ph:'Marklife 360'},{k:'fee',n:'Fee mensual (USD)',r:1,type:'number'},{k:'goal',n:'Piezas al mes',r:1,type:'number'},{k:'adsBudget',n:'Presupuesto de anuncios al mes (USD)',type:'number'},{k:'services',n:'Servicios incluidos',r:1,t:'area',full:1,ph:'Reels, fotos, manejo de redes, anuncios, landing...'},{k:'goalText',n:'Objetivo principal',r:1,t:'area',full:1,ph:'Ej: llenar la agenda de citas de lunes a viernes'},{k:'audience',n:'Público objetivo',r:1,t:'area',full:1,ph:'Edad, zona, intereses'},{k:'competitors',n:'Competencia',full:1},{k:'notes',n:'Notas internas',t:'area',full:1}],
+  [{k:'links.instagram',n:'Instagram',ph:'https://instagram.com/...'},{k:'links.facebook',n:'Facebook'},{k:'links.tiktok',n:'TikTok'},{k:'links.youtube',n:'YouTube'},{k:'links.landing',n:'Web / landing'},{k:'links.gmb',n:'Ficha de Google'},{k:'driveFolder',n:'Carpeta de Google Drive',full:1,ph:'https://drive.google.com/drive/folders/...'},{k:'fluxAccountId',n:'Cuenta en Flux',t:'flux',full:1}],
+];
+let CFS=null;
+function clientForm(id,startStep){
+  const c=id?clientById(id):{goal:D().settings.defaultGoal,links:{}};
+  CFS={id,step:startStep||0,v:JSON.parse(JSON.stringify(c)),logoData:null};CFS.v.links=CFS.v.links||{};
+  renderCF();
+}
+const cfGet=k=>k.startsWith('links.')?(CFS.v.links[k.slice(6)]||''):(CFS.v[k]==null?'':CFS.v[k]);
+const cfSet=(k,v)=>{if(k.startsWith('links.'))CFS.v.links[k.slice(6)]=v;else CFS.v[k]=v};
+function cfField(f){
+  if(f.t==='logo'){const src=CFS.logoData||(CFS.v.logo?logoUrl(CFS.v.logo):'');return`<div class="fld" style="grid-column:1/-1"><span>Logo <b>*</b></span><label class="drop" id="drop"><div class="pv">${src?`<img src="${esc(src)}" alt="">`:ico('image',30)}</div><div><b style="font-size:15px">${src?'Cambiar logo':'Sube el logo del cliente'}</b><div class="muted" style="font-size:13px;margin-top:4px">PNG con fondo transparente, JPG o WEBP. Arrástralo aquí o toca para elegirlo.</div></div><input type="file" id="lgf" accept="image/png,image/jpeg,image/webp" hidden></label></div>`}
+  const val=cfGet(f.k),lab=`<span>${f.n}${f.r?' <b>*</b>':' (opcional)'}</span>`,st=f.full?' style="grid-column:1/-1"':'';
+  if(f.t==='area')return`<label class="fld"${st}>${lab}<textarea class="in" data-k="${f.k}" placeholder="${esc(f.ph||'')}">${esc(val)}</textarea></label>`;
+  if(f.t==='flux')return`<label class="fld"${st}>${lab}<div style="display:flex;gap:8px"><input class="in mono" data-k="${f.k}" value="${esc(val)}" placeholder="ID de la cuenta">${D().integrations.flux?`<button class="btn" type="button" onclick="pickFlux()">${ico('search',16)}Buscar</button>`:''}</div></label>`;
+  return`<label class="fld"${st}>${lab}<input class="in${f.type==='number'||f.type==='tel'?' mono':''}" data-k="${f.k}" type="${f.type||'text'}" value="${esc(val)}" placeholder="${esc(f.ph||'')}"${f.type==='number'?' min="0" step="any"':''}></label>`;
+}
+function renderCF(){
+  const s=CFS.step,last=s===CF.length-1;
+  modal(`<h2>${CFS.id?'Ficha de '+esc(CFS.v.name):'Nuevo cliente'}</h2><div class="sub">Completa toda la información. Los campos con * son obligatorios.</div>
+  <div class="steps">${CF_STEPS.map((n,i)=>`<div class="${i===s?'on':i<s?'done':''}"><i></i><span>${i+1}. ${n}</span></div>`).join('')}</div>
+  <div class="grid2" id="cfg">${CF[s].map(cfField).join('')}</div>
+  ${s===3?'<p class="muted" style="font-size:13px;margin-top:14px">Pon al menos una red social o web.</p>':''}
+  ${s===3&&CFS.id?`<div style="display:flex;align-items:center;gap:12px;margin-top:16px"><div class="sw${CFS.v.active!==false?' on':''}" id="cact" onclick="this.classList.toggle('on');CFS.v.active=this.classList.contains('on')"></div><span>Cliente activo</span></div>`:''}
+  <div class="foot">${s?`<button class="btn ghost" onclick="cfMove(-1)">${ico('left')}Atrás</button>`:`<button class="btn ghost" onclick="closeModal()">Cancelar</button>`}<span class="sp"></span><button class="btn pri" id="cfn" style="height:50px">${last?ico('check')+'Guardar cliente':'Siguiente'+ico('right')}</button></div>`,true);
+  document.querySelectorAll('#cfg [data-k]').forEach(el=>el.oninput=()=>{cfSet(el.dataset.k,el.value);el.classList.remove('bad')});
+  const lf=$('#lgf');if(lf){lf.onchange=()=>lf.files[0]&&loadLogo(lf.files[0]);const dp=$('#drop');dp.ondragover=e=>{e.preventDefault();dp.classList.add('over')};dp.ondragleave=()=>dp.classList.remove('over');dp.ondrop=e=>{e.preventDefault();dp.classList.remove('over');e.dataTransfer.files[0]&&loadLogo(e.dataTransfer.files[0])}}
+  $('#cfn').onclick=()=>last?cfSave():cfMove(1);
+}
+function cfMissing(step){
+  const miss=[];CF[step].forEach(f=>{if(f.t==='logo'){if(!CFS.logoData&&!CFS.v.logo)miss.push({n:'Logo'});return}if(f.r&&!String(cfGet(f.k)).trim())miss.push(f)});
+  if(step===2){if(!(parseFloat(CFS.v.fee)>0))miss.push({k:'fee',n:'Fee mensual'});if(!(parseInt(CFS.v.goal)>0))miss.push({k:'goal',n:'Piezas al mes'})}
+  if(step===1&&CFS.v.email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(CFS.v.email))miss.push({k:'email',n:'Correo válido'});
+  if(step===3&&!Object.values(CFS.v.links).some(v=>String(v||'').trim()))miss.push({n:'Al menos una red o web'});
+  if(step===3)['instagram','facebook','tiktok','youtube','landing','gmb'].forEach(k=>{const v=String(CFS.v.links[k]||'').trim();if(v&&!/^https?:\/\//i.test(v))miss.push({k:'links.'+k,n:'Enlace completo (https://...)'})});
+  return miss;
+}
+function cfMove(d){
+  if(d>0){const miss=cfMissing(CFS.step);if(miss.length){miss.forEach(f=>{const el=f.k&&document.querySelector(`#cfg [data-k="${f.k}"]`);if(el)el.classList.add('bad')});return toast('Falta: '+[...new Set(miss.map(f=>f.n))].join(', '),true)}}
+  CFS.step+=d;renderCF();
+}
+async function cfSave(){
+  for(let i=0;i<CF.length;i++){const miss=cfMissing(i);if(miss.length){CFS.step=i;renderCF();miss.forEach(f=>{const el=f.k&&document.querySelector(`#cfg [data-k="${f.k}"]`);if(el)el.classList.add('bad')});return toast('Falta: '+[...new Set(miss.map(f=>f.n))].join(', '),true)}}
+  const b=Object.assign({},CFS.v);if(CFS.logoData)b.logo=CFS.logoData;else delete b.logo;
+  const btn=$('#cfn');btn.disabled=true;btn.innerHTML='<span class="spin"></span>Guardando';
+  const r=await act(()=>api(CFS.id?'PUT':'POST','/api/clients'+(CFS.id?'/'+CFS.id:''),b),CFS.id?'Ficha actualizada':'Cliente agregado');
+  if(!r){btn.disabled=false;btn.innerHTML=ico('check')+'Guardar cliente';return}
+  closeModal();await reload();if(!CFS.id)openClient(r.id,'ficha');
+}
+function loadLogo(file){
+  if(!/^image\/(png|jpeg|webp)$/.test(file.type))return toast('El logo debe ser PNG, JPG o WEBP',true);
+  if(file.size>15e6)return toast('La imagen es demasiado grande',true);
+  const img=new Image(),url=URL.createObjectURL(file);
+  img.onload=()=>{const max=512,k=Math.min(1,max/Math.max(img.width,img.height)),cv=document.createElement('canvas');cv.width=Math.round(img.width*k);cv.height=Math.round(img.height*k);
+    cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);URL.revokeObjectURL(url);
+    CFS.logoData=file.type==='image/jpeg'?cv.toDataURL('image/jpeg',.9):cv.toDataURL('image/png');renderCF()};
+  img.onerror=()=>toast('No pude leer esa imagen',true);img.src=url;
+}
+async function pickFlux(){const r=await act(()=>api('GET','/api/flux/accounts'));if(!r)return;const inp=document.querySelector('[data-k="fluxAccountId"]'),q=String(CFS.v.name||'').toLowerCase();
+  document.querySelectorAll('.fluxpick').forEach(x=>x.remove());
+  const box=document.createElement('div');box.className='glass fluxpick';box.style.cssText='padding:8px;max-height:220px;overflow:auto;margin-top:8px';
+  box.innerHTML=r.accounts.map(a=>`<div class="file" style="cursor:pointer;padding:8px 10px" data-id="${a.id}"><span class="mono muted" style="width:40px">${a.id}</span><span class="nm">${esc(a.name)}</span></div>`).join('');
+  box.querySelectorAll('[data-id]').forEach(el=>el.onclick=()=>{inp.value=el.dataset.id;cfSet('fluxAccountId',el.dataset.id);box.remove()});
+  inp.parentElement.after(box);const hit=q&&r.accounts.find(a=>a.name&&a.name.toLowerCase().includes(q));if(hit)box.querySelector(`[data-id="${hit.id}"]`).style.background='rgba(255,255,255,.12)'}
+
+function userForm(id){
+  const u=id?userById(id):{role:'equipo',active:true,perms:{anuncios:false,visitas:true,borrar:false,finanzas:false}};const self=id===D().me.id;
+  modal(`<h2>${id?'Editar miembro':'Nuevo miembro'}</h2><div class="sub">${id?'Deja la clave vacía para no cambiarla. Cambiarla cierra su sesión.':'Entrará por marklifeagency.com/teammembers.html con este usuario y clave.'}</div><div class="body">
+   <div class="grid2"><label class="fld"><span>Nombre</span><input class="in" id="un" value="${esc(u.name||'')}"></label><label class="fld"><span>Usuario</span><input class="in mono" id="uu" value="${esc(u.user||'')}" ${id?'disabled':''} autocapitalize="none"></label></div>
+   <div class="grid2"><label class="fld"><span>Área</span><select class="in" id="ua">${AREAS.map(a=>`<option${a===u.area?' selected':''}>${a}</option>`).join('')}</select></label><label class="fld"><span>${id?'Nueva clave':'Clave'}</span><input class="in" id="up" type="password" minlength="8" placeholder="mínimo 8 caracteres" autocomplete="new-password"></label></div>
+   ${self?'':`<div class="fld"><span>Rol</span><div class="seg" id="ur"><button class="${u.role!=='fundador'?'on':''}" data-v="equipo">Equipo</button><button class="${u.role==='fundador'?'on':''}" data-v="fundador">Fundador (panel maestro)</button></div></div>
+   <div class="fld" id="upw"><span>Permisos</span>${Object.entries(PERMS).map(([k,[n,d]])=>`<div class="perm"><div><b>${n}</b><small>${d}</small></div><div class="sw${u.perms&&u.perms[k]?' on':''}" data-p="${k}" onclick="this.classList.toggle('on')"></div></div>`).join('')}<small class="muted" style="font-size:12.5px">Todos pueden registrar piezas y moverlas en el tablero.</small></div>`}
+   ${id&&!self?`<div class="perm"><div><b>Acceso al Ecosistema</b><small>Si lo apagas, sale al instante y no puede volver a entrar.</small></div><div class="sw${u.active?' on':''}" id="uact" onclick="this.classList.toggle('on')"></div></div>`:''}
+  </div><div class="foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn pri" id="uok">${ico('check')}Guardar</button></div>`);
+  if(!self){bindChips('#ur',v=>$('#upw').style.display=v==='fundador'?'none':'');if(u.role==='fundador')$('#upw').style.display='none'}
+  $('#uok').onclick=()=>{const b={name:$('#un').value,area:$('#ua').value};if($('#up').value)b.pass=$('#up').value;
+    if(!self){b.role=pick('#ur');b.perms={};document.querySelectorAll('[data-p]').forEach(x=>b.perms[x.dataset.p]=x.classList.contains('on'))}
+    if(id&&!self)b.active=$('#uact').classList.contains('on');
+    if(!id){b.user=$('#uu').value;if(!b.pass)return toast('Ponle una clave',true)}
+    act(async()=>{await api(id?'PUT':'POST','/api/users'+(id?'/'+id:''),b);closeModal();await reload()},'Guardado')};
+}
+function shareReport(id){const c=clientById(id);const url=location.origin+'/reporte.html?c='+c.reportToken;
+  modal(`<h2>Reporte de ${esc(c.name)}</h2><div class="sub">Enlace privado de solo lectura: el cliente ve lo entregado, la inversión y los resultados, mes a mes. Nunca ve notas internas, el fee ni al equipo.</div><div class="body"><input class="in mono" id="rurl" value="${esc(url)}" readonly onclick="this.select()"></div>
+  <div class="foot"><button class="btn ghost" onclick="if(confirm('El enlace anterior dejará de funcionar. ¿Seguir?'))act(async()=>{await api('POST','/api/clients/${id}/report-token');await reload();shareReport('${id}')},'Enlace nuevo creado')">${ico('sync')}Cambiar enlace</button><span class="sp"></span><a class="btn" href="${esc(url)}" target="_blank" rel="noopener">${ico('ext')}Abrir</a><button class="btn pri" onclick="navigator.clipboard.writeText($('#rurl').value).then(()=>toast('Enlace copiado'))">${ico('link')}Copiar</button></div>`)}
+async function syncDrive(id,btn){if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span>'}await act(async()=>{await api('POST','/api/drive/sync/'+id);await reload()},'Drive actualizado');if(btn&&document.body.contains(btn)){btn.disabled=false;btn.innerHTML=ico('sync',15)}}
+async function syncFlux(id,btn){if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span>'}await act(async()=>{await api('POST','/api/flux/sync/'+id,{month:S.month});await reload()},'Flux actualizado');if(btn&&document.body.contains(btn)){btn.disabled=false;btn.innerHTML=ico('sync',15)}}
+
+// ───────────── Reporte del cliente ─────────────
+async function renderReport(token){
+  let R;try{if(!token)throw 0;R=await api('GET','/api/report/'+encodeURIComponent(token))}catch(e){$('#root').innerHTML=`<div class="login"><div class="box glass"><div class="mark">${MARK}</div><h1 style="font-size:26px">Reporte no disponible</h1><p>Pídele a Marklife un enlace actualizado.</p></div></div>`;return}
+  const c=R.client,months=[...new Set([...R.deliverables,...R.ads,...R.visits,...R.results].map(x=>x.month).concat(Object.keys(R.flux)))].sort().reverse();
+  const pub=R.deliverables.filter(d=>d.stage==='publicado'),spend=R.ads.reduce((a,x)=>a+x.spend,0),leads=R.ads.reduce((a,x)=>a+x.leads,0),fl=Object.values(R.flux).reduce((a,x)=>a+(x.newLeads||0),0);
+  const sumM=(arr,m,k)=>arr.filter(x=>x.month===m).reduce((a,x)=>a+(x[k]||0),0),y12=lastN(thisMonth(),12);
+  document.title='Reporte · '+c.name;
+  $('#root').innerHTML=`<div style="max-width:1000px;margin:0 auto;padding:28px 16px 80px">
+  <div class="top rise"><div class="brand" style="padding:0"><div class="mark">${MARK}</div><div><b>Marklife</b><small>Reporte de resultados</small></div></div><div class="sp"></div><button class="btn sm noprint" onclick="print()">${ico('print',15)}Imprimir</button></div>
+  <div class="chead glass edge rise">${logoHTML(c)}<div style="flex:1"><h1>${esc(c.name)}</h1><div class="muted" style="margin-top:6px">${esc([c.sector,c.plan,c.startDate?'con nosotros desde '+fdate(c.startDate):''].filter(Boolean).join(' · '))}</div></div></div>
+  <div class="sec"><h2>Desde que trabajamos juntos</h2></div>
+  <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"><div class="kpi glass hero edge"><div class="l">Piezas publicadas</div><div class="v mono">${fmt(pub.length)}</div><div class="d">${fmt(R.deliverables.length)} trabajadas</div></div><div class="kpi glass"><div class="l">Invertido en anuncios</div><div class="v mono">${money(spend)}</div></div><div class="kpi glass"><div class="l">Resultados de anuncios</div><div class="v mono">${fmt(leads)}</div><div class="d">${leads?money(spend/leads)+' por resultado':''}</div></div><div class="kpi glass"><div class="l">Personas que escribieron</div><div class="v mono">${fl?fmt(fl):'—'}</div><div class="d">registradas en tu CRM</div></div></div>
+  <div class="charts" style="margin-bottom:18px"><div class="glass chartcard"><h3>${ico('send',16)}Piezas publicadas · 12 meses</h3>${chartHTML(y12.map(x=>({l:mShort(x),v:pub.filter(d=>d.month===x).length})),fmt,'var(--c4)')}</div><div class="glass chartcard"><h3>${ico('eye',16)}Visitas por canal · 12 meses</h3>${stackHTML(y12,SOURCES.map(s=>({n:s,c:SRC_C[s],vals:y12.map(x=>R.visits.filter(v=>v.month===x&&v.source===s).reduce((a,v)=>a+v.visits,0))})))}</div></div>
+  ${months.map(m=>{const ds=R.deliverables.filter(d=>d.month===m),p=ds.filter(d=>d.stage==='publicado'),f=R.flux[m],res=R.results.filter(r=>r.month===m),vis=R.visits.filter(v=>v.month===m);
+   const prog=STAGES.map(s=>({n:STAGE[s].n,v:ds.filter(d=>STAGES.indexOf(d.stage)>=STAGES.indexOf(s)).length,g:Math.max(c.goal||ds.length,1),c:STAGE[s].c})).map(r=>(r.p=pct(r.v,r.g),r));
+   return`<div class="month-hist glass rise"><h3>${ico('clock')}${mLabel(m)}</h3><div class="cols" style="grid-template-columns:minmax(0,1fr) 300px;margin-top:16px"><div>
+    <div class="minis" style="margin-bottom:14px"><div class="mini"><div class="l">Anuncios</div><div class="v mono" style="font-size:18px">${money(sumM(R.ads,m,'spend'))}</div><div class="d">${fmt(sumM(R.ads,m,'leads'))} resultados</div></div><div class="mini"><div class="l">Visitas</div><div class="v mono" style="font-size:18px">${fmt(sumM(R.visits,m,'visits'))}</div><div class="d">${esc(vis.map(v=>v.source).join(', '))}</div></div>${f?`<div class="mini"><div class="l">Te escribieron</div><div class="v mono" style="font-size:18px">${fmt(f.newLeads)}</div><div class="d">${fmt(f.appointmentsDone)} citas</div></div>`:''}${res.map(r=>`<div class="mini"><div class="l">${esc(r.kind)}</div><div class="v mono" style="font-size:18px">${fmt(r.value)}</div><div class="d">${esc(r.notes||'')}</div></div>`).join('')}</div>
+    ${p.length?`<div class="chips">${p.map(d=>d.publishUrl?`<a class="chip" style="height:34px;font-size:13px" href="${esc(d.publishUrl)}" target="_blank" rel="noopener">${ico(typeIcon(d.type),15)}${esc(d.title)}</a>`:`<span class="chip" style="height:34px;font-size:13px;cursor:default">${ico(typeIcon(d.type),15)}${esc(d.title)}</span>`).join('')}</div>`:''}
+   </div><div>${ds.length?barsHTML(prog):''}</div></div></div>`}).join('')||'<div class="glass card empty">Pronto verás aquí todo lo que hacemos por tu marca.</div>'}
+  <p class="muted" style="text-align:center;margin-top:30px;font-size:12.5px">Marklife Agency · Actualizado en tiempo real</p></div>`;
+}
+
+// ───────────── Arranque ─────────────
+(async()=>{
+  if(MODE==='reporte')return renderReport(new URLSearchParams(location.search).get('c'));
+  if(!S.token)return renderLogin();
+  try{await reload()}catch(e){renderLogin()}
+  setInterval(()=>{if(S.data&&!$('#ov')&&document.visibilityState==='visible')api('GET','/api/state').then(d=>{S.data=d;render()}).catch(()=>{})},45000);
+})();
+</script>
+</body>
+</html>
